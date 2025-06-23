@@ -184,8 +184,12 @@ npx shadcn@latest add button
 
 ## 00:30:35 - Add Header Component
 
-1. Create a new file: `src/components/Header.tsx`
-2. Build the header using Shadcn UI components.
+1. Create a new directiory :  `src/components/header`
+2. Create a new file: `src/components/header/index.tsx`
+2. Build the header component.
+    use react snippet (rafce or rfce )  to fast create component with the same name of the file
+    change name of component to Header
+
 3. Import the header in `layout.tsx` or the main page.
 
 ## 00:55:21 - Add Hero Component
