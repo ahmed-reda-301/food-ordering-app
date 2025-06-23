@@ -1,10 +1,10 @@
-import React from "react";
+import Link from "../link"; // Adjust the import path as necessary
 
 function Header() {
   return (
     <header>
       <div className="container">
-        <h2>Header Component</h2>
+        <Link href="/"> 🍕 Pizza</Link>
       </div>
     </header>
   );
