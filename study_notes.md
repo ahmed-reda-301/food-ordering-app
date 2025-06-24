@@ -99,10 +99,10 @@ The project is organized as follows:
 
 ## 00:06:05 - Setup Next.js Project
 
-1. Install Node.js and npm (if not already installed):
-   - [Download Node.js](https://nodejs.org/)
-2. Install vs code 
-3. install extensions
+1.  Install Node.js and npm (if not already installed):
+    - [Download Node.js](https://nodejs.org/)
+2.  Install vs code
+3.  install extensions
     -Bracket Pair Color DLW
     -ES7+ React/Redux/React-Native snippets
     -ESLint
@@ -110,22 +110,23 @@ The project is organized as follows:
     -Prettier - Code formatter
     -Prisma
     -Tailwind CSS IntelliSense
-3. configer Default Formatter
+4.  configer Default Formatter
     -Editor: Default Formatter
-Defines a default formatter which takes precedence over all other formatter settings. Must be the identifier of an extension contributing a formatter.
-            Prettier - Code formatter
+    Defines a default formatter which takes precedence over all other formatter settings. Must be the identifier of an extension contributing a formatter.
+    Prettier - Code formatter
     -in setting.json file :
-        "[prisma]": {
-        "editor.defaultFormatter": "prisma.prisma",
-        "editor.formatOnSave": true
+    "[prisma]": {
+    "editor.defaultFormatter": "prisma.prisma",
+    "editor.formatOnSave": true
 
-    },
-4. Create a new Next.js project:
-https://nextjs.org/docs/app/getting-started/installation
+        },
 
-   ```bash
-   npx create-next-app@latest food-ordering-app
-   ```
+5.  Create a new Next.js project:
+    https://nextjs.org/docs/app/getting-started/installation
+
+    ```bash
+    npx create-next-app@latest food-ordering-app
+    ```
 
 ✔ What is your project named? … food-ordering-app
 ✔ Would you like to use TypeScript? … No / Yes
@@ -143,60 +144,81 @@ https://nextjs.org/docs/app/getting-started/installation
 6. Open the app in your browser: [http://localhost:3000](http://localhost:3000)
 
 7. Change font:
-    -In `app/layout` change the font to `'Roboto'`:
-        const roboto = Roboto({
-        subsets: ["latin"],
-        weight: ["400", "500", "700"],
-        preload: true,
-        });
-    -remove unused fonts
+   -In `app/layout` change the font to `'Roboto'`:
+   const roboto = Roboto({
+   subsets: ["latin"],
+   weight: ["400", "500", "700"],
+   preload: true,
+   });
+   -remove unused fonts
 
-8. remove unused content from `app/page.tsx` and  change to 
+8. remove unused content from `app/page.tsx` and change to
 
-    <main>
-      <h1>Hello World</h1>
-    </main>
+   <main>
+     <h1>Hello World</h1>
+   </main>
 
-    for testing
-
-
+   for testing
 
 ## 00:20:57 - Setup Shadcn UI
 
 1. Install shadcn/ui:
-https://ui.shadcn.com/docs/installation/next
+   https://ui.shadcn.com/docs/installation/next
    ```bash
    npx shadcn-ui@latest init
    ```
 2. Choose your preferred settings (theme, style, etc.).
- in [components.json](components.json)
+   in [components.json](components.json)
 3. Edit cssVariables (color) in [globals.css](src/app/globals.css)
-        https://htmlcolors.com/hex-to-hsl
+   https://htmlcolors.com/hex-to-hsl
 4. [Official Documentation](https://ui.shadcn.com/docs/installation)
 5. Add Components
-You can now start adding components to your project.
+   You can now start adding components to your project.
 
    ```bash
-npx shadcn@latest add button
+   npx shadcn@latest add button
    ```
-   
-
 
 ## 00:30:35 - Add Header Component
 
-1. Create a new directiory :  `src/components/header`
+1. Create a new directiory : `src/components/header`
 2. Create a new file: `src/components/header/index.tsx`
-2. Build the header component.
-    use react snippet (rafce or rfce )  to fast create component with the same name of the file
-    change name of component to Header
+3. Build the header component.
+   use react snippet (rafce or rfce ) to fast create component with the same name of the file
+   change name of component to Header
 
-3. Import the header in `layout.tsx` or the main page.
+4. Import the header in `layout.tsx` or the main page.
 
 ## 00:55:21 - Add Hero Component
 
-1. Create a new file: `src/components/Hero.tsx`
-2. Design the hero section with an image and welcome text.
-3. Use ready-made components from Shadcn UI.
+1. Create a new file: `src/app/_components/Hero.tsx`
+2. Build the Hero component to serve as the main visual section at the top of the homepage.
+   - The Hero section typically includes a catchy headline, a short description, and a call-to-action button.
+   - You can use Shadcn UI and Tailwind CSS utility classes for layout and styling.
+   - Make sure the Hero is fully responsive and visually appealing on all screen sizes.
+3. Example features implemented:
+   - Responsive layout using flex and grid utilities.
+   - Prominent headline and subheadline to introduce the app.
+   - Call-to-action button (e.g., "Order Now") styled with Shadcn UI button variants.
+   - Optionally, an image or illustration relevant to food ordering.
+4. Import and use the Hero component in your main page (e.g., `src/app/page.tsx`).
+
+**Example usage:**
+
+```tsx
+import Hero from "./_components/Hero";
+
+export default function Home() {
+  return (
+    <main>
+      <Hero />
+      {/* Other sections... */}
+    </main>
+  );
+}
+```
+
+> The Hero component is the first thing users see and sets the tone for your app, so focus on clarity, branding, and responsiveness.
 
 ## 01:06:48 - Add Best Sellers Component
 

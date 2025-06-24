@@ -17,10 +17,10 @@
 //   <Link href="/about">About Us</Link>
 //   <Link href="/menu" target="_blank">Menu</Link>
 
-'use client';
+"use client";
 
-import NextLink, { LinkProps as NextLinkProps } from 'next/link';
-import React, { FC, HTMLAttributes, useEffect, useRef, useState } from 'react';
+import NextLink, { LinkProps as NextLinkProps } from "next/link";
+import React, { FC, HTMLAttributes, useEffect, useRef, useState } from "react";
 
 type CustomLinkProps = NextLinkProps & {
   children: React.ReactNode;
@@ -39,11 +39,11 @@ const Link: FC<CustomLinkProps> = ({ children, href, ...rest }) => {
   };
   useEffect(() => {
     const linkElement = linkRef.current;
-    linkElement?.addEventListener('mouseover', setPrefetchListener);
-    linkElement?.addEventListener('mouseleave', removePrefetchListener);
+    linkElement?.addEventListener("mouseover", setPrefetchListener);
+    linkElement?.addEventListener("mouseleave", removePrefetchListener);
     return () => {
-      linkElement?.removeEventListener('mouseover', setPrefetchListener);
-      linkElement?.removeEventListener('mouseleave', removePrefetchListener);
+      linkElement?.removeEventListener("mouseover", setPrefetchListener);
+      linkElement?.removeEventListener("mouseleave", removePrefetchListener);
     };
   }, [prefetching]);
   return (
