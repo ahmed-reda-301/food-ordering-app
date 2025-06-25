@@ -17,13 +17,16 @@
 // - Uses Tailwind CSS utility classes for color, font, and spacing.
 // - Responsive and visually consistent with the app's design system.
 
-function MainHeading({ title, subTitle }: Readonly<{ title: string; subTitle: string }>) {
+function MainHeading({
+  title,
+  subTitle,
+}: Readonly<{ title: string; subTitle: string }>) {
   return (
     <>
-      <span className='uppercase text-accent font-semibold leading-4'>
+      <span className="uppercase text-accent font-semibold leading-4">
         {subTitle}
       </span>
-      <h2 className='text-primary font-bold text-4xl italic'>{title}</h2>
+      <h2 className="text-primary font-bold text-4xl italic">{title}</h2>
     </>
   );
 }
