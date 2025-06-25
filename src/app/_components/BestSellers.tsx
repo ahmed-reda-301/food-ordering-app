@@ -26,18 +26,17 @@
 //   </div>
 // </section>
 
-import MainHeading from '@/components/main-heading';
+import MainHeading from "@/components/main-heading";
 
-async function BestSellers() {
+function BestSellers() {
+
   return (
     <section>
-      <div className='container'>
-        <div className='text-center mb-4'>
-          <MainHeading
-            subTitle={'checkOut'}
-            title={'Our Best Sellers'}
-          />
+      <div className="container">
+        <div className="text-center mb-4">
+          <MainHeading subTitle={"checkOut"} title={"Our Best Sellers"} />
         </div>
+
       </div>
     </section>
   );
