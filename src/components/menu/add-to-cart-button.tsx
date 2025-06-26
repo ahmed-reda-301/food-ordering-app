@@ -37,19 +37,20 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { formatCurrency } from "@/lib/formatters";
 import { Checkbox } from "../ui/checkbox";
+import { Extra, Size } from "@prisma/client";
+import { ProductWithRelations } from "@/types/product";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function AddToCartButton({ item }: { item: any }) {
-  const sizes = [
-    { id: crypto.randomUUID(), name: "Small", price: 0 },
-    { id: crypto.randomUUID(), name: "Medium", price: 2 },
-    { id: crypto.randomUUID(), name: "Large", price: 4 },
-  ];
-  const extras = [
-    { id: crypto.randomUUID(), name: "Cheese", price: 2 },
-    { id: crypto.randomUUID(), name: "Tomato", price: 4 },
-    { id: crypto.randomUUID(), name: "Onion", price: 6 },
-  ];
+function AddToCartButton({ item }: { item: ProductWithRelations }) {
+  //   const sizes = [
+  //     { id: crypto.randomUUID(), name: "Small", price: 0 },
+  //     { id: crypto.randomUUID(), name: "Medium", price: 2 },
+  //     { id: crypto.randomUUID(), name: "Large", price: 4 },
+  //   ];
+  //   const extras = [
+  //     { id: crypto.randomUUID(), name: "Cheese", price: 2 },
+  //     { id: crypto.randomUUID(), name: "Tomato", price: 4 },
+  //     { id: crypto.randomUUID(), name: "Onion", price: 6 },
+  //   ];
 
   return (
     <Dialog>
@@ -73,11 +74,11 @@ function AddToCartButton({ item }: { item: any }) {
         <div className="space-y-10">
           <div className="space-y-4 text-center">
             <Label htmlFor="pick-size">Pick your size</Label>
-            <PickSize sizes={sizes} item={item} />
+            <PickSize sizes={item.sizes} item={item} />
           </div>
           <div className="space-y-4 text-center">
             <Label htmlFor="add-extras">Any extras?</Label>
-            <Extras extras={extras} />
+            <Extras extras={item.extras} />
           </div>
         </div>
         <DialogFooter>
@@ -92,7 +93,13 @@ function AddToCartButton({ item }: { item: any }) {
 
 export default AddToCartButton;
 
-function PickSize({ sizes, item }: { sizes: any; item: any }) {
+function PickSize({
+  sizes,
+  item,
+}: {
+  sizes: Size[];
+  item: ProductWithRelations;
+}) {
   return (
     <RadioGroup defaultValue="comfortable">
       {sizes.map((size) => (
@@ -109,7 +116,7 @@ function PickSize({ sizes, item }: { sizes: any; item: any }) {
     </RadioGroup>
   );
 }
-function Extras({ extras }: { extras: any }) {
+function Extras({ extras }: { extras: Extra[] }) {
   return extras.map((extra) => (
     <div
       key={extra.id}
