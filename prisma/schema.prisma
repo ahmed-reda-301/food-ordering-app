@@ -1,8 +1,31 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// -----------------------------------------------------------------------------
+// prisma/schema.prisma
+//
+// This file defines the database schema for the food ordering app using Prisma ORM.
+// It describes all tables (models), their fields, relationships, and enums.
+//
+// Key Models:
+// - User: Stores user account and profile information. Linked to orders.
+// - Product: Represents menu items (e.g., pizzas), with relations to sizes, extras, category, and orders.
+// - Size: Defines available sizes for each product (SMALL, MEDIUM, LARGE).
+// - Extra: Defines extra ingredients for products (e.g., CHEESE, BACON).
+// - Category: Groups products into categories (e.g., Pizza, Drinks).
+// - Order: Stores order details, delivery info, and links to ordered products.
+// - OrderProduct: Join table for many-to-many relation between orders, products, and users, with quantity.
+//
+// Enums:
+// - ProductSizes: Allowed size values for products.
+// - ExtraIngredients: Allowed extra ingredient values.
+//
+// Notes:
+// - All relations are explicitly defined for referential integrity.
+// - Uses UUIDs and cuid for unique IDs.
+// - Timestamps for createdAt and updatedAt are included for auditing.
+// - The schema is designed for extensibility (e.g., adding more product options or order statuses).
+//
+// For more info, see: https://www.prisma.io/docs/concepts/components/prisma-schema
+// -----------------------------------------------------------------------------
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
   provider = "prisma-client-js"
@@ -14,17 +37,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  password      String
+  name          String
+  image         String?
+  phone         String?
+  streetAddress String?
+  postalCode    String?
+  city          String?
+  country       String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  orders        OrderProduct[]
+}
+
 model Product {
-  id          String   @id @default(cuid())
+  id          String         @id @default(cuid())
   name        String
   description String
   imageUrl    String
-  order       Int      @default(autoincrement())
+  order       Int            @default(autoincrement())
   basePrice   Float
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  sizes        Size[]
-  extras       Extra[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  sizes       Size[]
+  extras      Extra[]
+  orders      OrderProduct[]
+  category    Category       @relation(fields: [categoryId], references: [id])
+  categoryId  String
 }
 
 model Size {
@@ -40,6 +82,42 @@ model Extra {
   name      ExtraIngredients
   price     Float
   product   Product          @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+}
+
+model Category {
+  id       String    @id @default(uuid())
+  name     String
+  order    Int       @default(autoincrement())
+  products Product[]
+}
+
+model Order {
+  id            String         @id @default(uuid())
+  paid          Boolean        @default(false)
+  subTotal      Float
+  deliveryFee   Float
+  totalPrice    Float
+  userEmail     String
+  phone         String
+  streetAddress String
+  postalCode    String
+  city          String
+  country       String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  products      OrderProduct[]
+}
+
+model OrderProduct {
+  id       String @id @default(cuid())
+  quantity Int
+
+  order     Order   @relation(fields: [orderId], references: [id])
+  orderId   String
+  user      User?   @relation(fields: [userId], references: [id])
+  userId    String?
+  product   Product @relation(fields: [productId], references: [id])
   productId String
 }
 

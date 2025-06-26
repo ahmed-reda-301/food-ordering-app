@@ -32,12 +32,26 @@ import { db } from "@/lib/prisma";
 // This function fetches the best-selling products from the database
 // It uses caching to improve performance and reduce database load
 export const getBestSellers = cache(
-  () => {
+  (limit?: number | undefined) => {
     const bestSellers = db.product.findMany({
-      include: { sizes: true, extras: true },
-    }); 
+      where: {
+        orders: {
+          some: {}, 
+        }, 
+      },// Filter products that have been ordered at least once
+      orderBy: {
+        orders: {
+          _count: "desc",
+        },
+      }, // Order by the count of orders in descending order
+      include: {
+        sizes: true,
+        extras: true,
+      }, // Include related sizes and extras for each product
+      take: limit, // Optional limit to control the number of products returned
+    });
     return bestSellers;
   },
-  ["best-sellers"],
+  ["best-sellers"], // Cache key for the best sellers
   { revalidate: 3600 } // Revalidate every hour (3600 seconds) to keep the data fresh
 );

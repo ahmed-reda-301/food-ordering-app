@@ -19,8 +19,8 @@
 // - Use descriptive cache keys and appropriate revalidation times.
 // - Tag your cache for fine-grained invalidation if needed.
 // -----------------------------------------------------------------------------
-import { unstable_cache as nextCache } from 'next/cache';
-import { cache as reactCache } from 'react';
+import { unstable_cache as nextCache } from "next/cache";
+import { cache as reactCache } from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Callback = (...args: any[]) => Promise<any>;

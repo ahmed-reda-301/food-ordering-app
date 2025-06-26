@@ -34,28 +34,29 @@ import { getBestSellers } from "@/server/db/products";
 async function BestSellers() {
   // add products to the database
 
-  //   const _bestSellers = await db.product.createMany({
-  //     data: [
-  //       {
-  //         name: "Margherita Pizza",
-  //         description: "Classic pizza with fresh mozzarella and basil",
-  //         basePrice: 12.99,
-  //         imageUrl: "/assets/images/margherita.png",
-  //       },
-  //       {
-  //         name: "Pepperoni Pizza",
-  //         description: "Spicy pepperoni with melted cheese",
-  //         basePrice: 14.99,
-  //         imageUrl: "/assets/images/pepperoni.png",
-  //       },
-  //       {
-  //         name: "Veggie Supreme",
-  //         description: "Loaded with fresh vegetables and herbs",
-  //         basePrice: 11.99,
-  //         imageUrl: "/assets/images/veggie.png",
-  //       },
-  //     ],
-  //   });
+//   const _bestSellers = await db.product.createMany({
+//     data: [
+//       {
+//         name: "Margherita Pizza",
+//         description: "Classic pizza with fresh mozzarella and basil",
+//         basePrice: 12.99,
+//         imageUrl: "/assets/images/margherita.png",
+
+//       },
+//       {
+//         name: "Pepperoni Pizza",
+//         description: "Spicy pepperoni with melted cheese",
+//         basePrice: 14.99,
+//         imageUrl: "/assets/images/pepperoni.png",
+//       },
+//       {
+//         name: "Veggie Supreme",
+//         description: "Loaded with fresh vegetables and herbs",
+//         basePrice: 11.99,
+//         imageUrl: "/assets/images/veggie.png",
+//       },
+//     ],
+//   });
 
   //add sizes to the database
 
@@ -107,7 +108,7 @@ async function BestSellers() {
   //     },
   //   ]; // Placeholder for best seller items, can be fetched from a database or API later
 
-  //   const bestSellers = await db.product.findMany(); // This can be replaced with dynamic data later
+
 
   //   const bestSellers = await db.product.findMany({
   //     include: { sizes: true, extras: true },

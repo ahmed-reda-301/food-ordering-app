@@ -15,9 +15,6 @@ export default async function Home() {
   console.log("Fetched products:", products); // This will log all products to the console taht meening you can see them in the server logs
 
 
-
-
-
   return (
     <main>
       <Hero />
