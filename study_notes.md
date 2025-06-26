@@ -363,9 +363,34 @@ export default function Home() {
 
 ## 02:40:06 - Next.js Caching
 
+    - For better maintainability and scalability, move all database-related functions (such as fetching products, best sellers, etc.) into dedicated files inside a folder like `src/server/db/`.
+    - Example: Create a file `src/server/db/products.ts` and define functions like `getBestSellers` there.
+    - Import and use these functions in your components or API routes instead of writing database logic directly in the component files.
+    - This approach keeps your codebase clean, modular, and easier to test and extend.
+
+    ```ts
+    // Example: src/server/db/products.ts
+    import { db } from "@/lib/prisma";
+
+    export const getBestSellers = async () => {
+    return db.product.findMany({
+        include: { sizes: true, extras: true },
+    });
+    };
+    ```
+
+    ```ts
+    // Usage in a component or API route
+    import { getBestSellers } from "@/server/db/products";
+
+    const bestSellers = await getBestSellers();
+    ```
+
+    > Always keep your database access logic in one place for consistency and easier updates.
+
+
 - Use Next.js caching functions like `revalidate` and `getStaticProps` to improve performance.
 - [Official Docs](https://nextjs.org/docs/app/building-your-application/caching)
-
 ## 02:54:42 - Update Database Schema
 
 1. Edit `prisma/schema.prisma` to add new tables or columns.

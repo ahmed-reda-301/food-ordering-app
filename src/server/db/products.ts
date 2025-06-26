@@ -18,12 +18,26 @@
 // - Use this function for server-side data fetching to ensure up-to-date data.
 // - Extend this module with more product-related queries as needed.
 // -----------------------------------------------------------------------------
+import { cache } from "@/lib/cache";
 import { db } from "@/lib/prisma";
 
-export const getBestSellers = async () => {
-  // This function fetches the best-selling products from the database
-  const bestSellers = await db.product.findMany({
-    include: { sizes: true, extras: true },
-  });
-  return bestSellers;
-};
+// export const getBestSellers = async () => {
+//   // This function fetches the best-selling products from the database
+//   const bestSellers = await db.product.findMany({
+//     include: { sizes: true, extras: true },
+//   });
+//   return bestSellers;
+// };
+
+// This function fetches the best-selling products from the database
+// It uses caching to improve performance and reduce database load
+export const getBestSellers = cache(
+  () => {
+    const bestSellers = db.product.findMany({
+      include: { sizes: true, extras: true },
+    }); 
+    return bestSellers;
+  },
+  ["best-sellers"],
+  { revalidate: 3600 } // Revalidate every hour (3600 seconds) to keep the data fresh
+);
