@@ -1,25 +1,32 @@
+// -----------------------------------------------------------------------------
 // src/components/menu/index.tsx
 //
 // Menu Component
 // --------------
 // Purpose:
-// - Displays the list of menu items (e.g., pizzas, drinks, etc.) on the menu page.
-// - Fetches and renders a collection of MenuItem components.
+// - Renders a list/grid of menu items (e.g., pizzas, drinks, etc.) using the MenuItem component.
+// - Receives an array of ProductWithRelations (with sizes, extras, etc.) as a prop.
 //
 // Features:
-// - Responsive grid or list layout for menu items.
-// - Uses MenuItem component for each product.
-// - Can be extended to fetch data from an API or database.
+// - Responsive grid layout for displaying menu items.
+// - Uses the strongly-typed ProductWithRelations for type safety and consistency.
+// - Gracefully handles empty product lists with a user-friendly message.
+// - Each MenuItem receives the full product object for detailed rendering.
 //
 // Usage:
-// <Menu />
+//   <Menu items={products} />
 //
 // Example:
-// <section>
-//   <div className="container">
-//     <Menu />
-//   </div>
-// </section>
+//   <section>
+//     <div className="container">
+//       <Menu items={products} />
+//     </div>
+//   </section>
+//
+// Notes:
+// - The component is now fully typed and expects data from the database (not static data).
+// - Easily extendable for filtering, sorting, or pagination in the future.
+// -----------------------------------------------------------------------------
 
 import MenuItem from "./MenuItem";
 import { ProductWithRelations } from "@/types/product";
@@ -32,7 +39,7 @@ function Menu({ items }: { items: ProductWithRelations[] }) {
       ))}
     </ul>
   ) : (
-    <p className="text-accent text-center">No items found</p>
+    <p className="text-accent text-center">No products found</p>
   );
 }
 
