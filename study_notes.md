@@ -222,23 +222,100 @@ export default function Home() {
 
 ## 01:06:48 - Add Best Sellers Component
 
-1. Create a new file: `src/components/BestSellers.tsx`
-2. Display the best-selling products in an attractive way.
-3. Connect the data to the database later.
+1. Create a new file: `src/app/_components/BestSellers.tsx`
+2. Build the BestSellers component to display a dedicated section for the most popular menu items.
+   - The section uses the `MainHeading` component for a consistent and styled section header.
+   - The layout is responsive and centered, making it visually appealing on all screen sizes.
+   - The component is designed to be easily extended in the future to fetch and display real best seller data from the database.
+3. Add and use the following subcomponents/utilities:
+   - **MainHeading** (`src/components/main-heading/index.tsx`):
+     - A reusable component for section titles and subtitles, ensuring consistent typography and style.
+     - Props: `title` (main heading), `subTitle` (subtitle, accent color, uppercase).
+   - **MenuItem** (`src/components/menu/MenuItem.tsx`):
+     - Represents a single best seller item (e.g., pizza), displaying its image, name, price, and add-to-cart button.
+     - Uses the `formatCurrency` utility for price formatting.
+     - Integrates the AddToCartButton for cart actions.
+   - **AddToCartButton** (`src/components/menu/add-to-cart-button.tsx`):
+     - Button to add the item to the shopping cart, handling click events and UI feedback.
+     - Can be extended to show loading or success states.
+   - **formatCurrency** (`src/lib/formatters.ts`):
+     - Utility function to format numbers as currency strings (e.g., $12.99) for consistent price display.
+4. Example features implemented:
+   - Responsive section layout using Tailwind CSS utility classes.
+   - Centered heading with subtitle (e.g., "checkOut") and title (e.g., "Our Best Sellers").
+   - Placeholder for future dynamic content (e.g., best seller cards or product grid).
+   - Each MenuItem displays product info and an AddToCartButton.
+5. Import and use the BestSellers component in your main page (e.g., `src/app/page.tsx`).
+
+**Example usage:**
+
+```tsx
+import BestSellers from "./_components/BestSellers";
+
+export default function Home() {
+  return (
+    <main>
+      {/* ...other sections... */}
+      <BestSellers />
+    </main>
+  );
+}
+```
+
+> The BestSellers component helps highlight top products and can be expanded to show real data as your app grows. Subcomponents like MainHeading, MenuItem, and AddToCartButton keep the code modular and maintainable.
 
 ## 01:51:56 - Database Setup
 
-1. Install Prisma:
+1. **Install Prisma:**
+   - Install the Prisma CLI as a dev dependency and initialize Prisma in your project.
+   - Docs: [Prisma Getting Started](https://www.prisma.io/docs/getting-started/setup-prisma/add-to-existing-project/relational-databases-typescript-postgresql)
    ```bash
    npm install prisma --save-dev
    npx prisma init
    ```
-2. Set up a PostgreSQL database (locally or using a service like [Supabase](https://supabase.com/)).
-3. Update the environment variables in `.env`:
+2. **Set up a PostgreSQL database:**
+   - You can use a local PostgreSQL instance or a cloud service like [Supabase](https://supabase.com/).
+   - Create a new database and user for your app.
+3. **Update environment variables:**
+   - In your `.env` file, set the `DATABASE_URL` to match your database credentials.
    ```env
-   DATABASE_URL="postgresql://USER:PASSWORD@localhost:5432/food_ordering"
+   # Example:
+   DATABASE_URL="postgresql://food_ordering_app_user:207301@localhost:5432/food_ordering_app_database"
    ```
-4. Define your database schema in `prisma/schema.prisma`.
+4. **Define your database schema:**
+   - Edit `prisma/schema.prisma` to define your data models. For example:
+   ```prisma
+   model Product {
+     id          String   @id @default(cuid())
+     name        String
+     description String
+     imageUrl    String
+     order       Int      @default(autoincrement())
+     basePrice   Float
+     createdAt   DateTime @default(now())
+     updatedAt   DateTime @updatedAt
+     categoryId  String
+   }
+   ```
+   - Docs: [Prisma Introspection](https://www.prisma.io/docs/getting-started/setup-prisma/add-to-existing-project/relational-databases/introspection-typescript-postgresql)
+5. **Create an initial migration:**
+   - Run the migration command to create your database tables based on the schema.
+   - Docs: [Prisma Migrate](https://www.prisma.io/docs/getting-started/setup-prisma/add-to-existing-project/relational-databases/baseline-your-database-typescript-postgresql)
+   ```bash
+   npx prisma migrate dev
+   ```
+6. **Connect to Prisma Client:**
+   - (Optional) If you have a custom output in your generator block, comment it out for default behavior.
+   - Run the following command to generate the Prisma client:
+   ```bash
+   npx prisma generate
+   ```
+7. **Create a Prisma Client Singleton for Next.js:**
+   - Create a file like `src/lib/prisma.ts` to ensure a single PrismaClient instance is used (see [prisma.ts](src/lib/prisma.ts)).
+8. **Test the connection:**
+   - Try querying the database from a page or API route (e.g., [page.tsx](src/app/page.tsx)) to ensure everything is working.
+
+> This setup ensures your app is ready for robust, type-safe database access with Prisma and PostgreSQL.
 
 ## 02:40:06 - Next.js Caching
 

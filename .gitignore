@@ -42,3 +42,5 @@ next-env.d.ts
 
 # Ignore study notes file
 @study_note
+
+/src/generated/prisma
