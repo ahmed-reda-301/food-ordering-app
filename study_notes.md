@@ -314,14 +314,50 @@ export default function Home() {
    - Create a file like `src/lib/prisma.ts` to ensure a single PrismaClient instance is used (see [prisma.ts](src/lib/prisma.ts)).
 8. **Test the connection:**
    - Try querying the database from a page or API route (e.g., [page.tsx](src/app/page.tsx)) to ensure everything is working.
-9. enter data to database use Prisma Studio
-    https://www.prisma.io/docs/orm/tools/prisma-studio
+9. Seed your database using Prisma Studio or programmatically with Prisma commands:
 
-    Run npx prisma studio in your terminal.
+   - You can use Prisma Studio for a user-friendly GUI to add and edit data:
+     https://www.prisma.io/docs/orm/tools/prisma-studio
 
-```bash
-   npx prisma studio
-   ```
+     Run the following command in your terminal:
+
+     ```bash
+     npx prisma studio
+     ```
+
+   - Alternatively, you can seed your database programmatically using Prisma commands in your code (see example in src/app/page.tsx):
+     ```ts
+     // Example: Add products, sizes, and extras directly from code
+     await db.product.createMany({
+       data: [
+         {
+           name: "Margherita Pizza",
+           description: "Classic pizza with fresh mozzarella and basil",
+           basePrice: 12.99,
+           imageUrl: "/assets/images/margherita.png",
+         },
+         {
+           name: "Pepperoni Pizza",
+           description: "Spicy pepperoni with melted cheese",
+           basePrice: 14.99,
+           imageUrl: "/assets/images/pepperoni.png",
+         },
+         {
+           name: "Veggie Supreme",
+           description: "Loaded with fresh vegetables and herbs",
+           basePrice: 11.99,
+           imageUrl: "/assets/images/veggie.png",
+         },
+       ],
+     });
+     // Add sizes and extras in a similar way, linking them to products via productId
+     ```
+   - After any changes to your schema.prisma, update your database with:
+     ```bash
+     npx prisma migrate dev --name update-schema
+     npx prisma generate
+     ```
+   - You can now fetch dynamic data in components like BestSellers using the Prisma Client.
 
 > This setup ensures your app is ready for robust, type-safe database access with Prisma and PostgreSQL.
 

@@ -29,6 +29,7 @@
 import MainHeading from "@/components/main-heading";
 import Menu from "@/components/menu";
 import { db } from "@/lib/prisma"; // Import your database client
+import { getBestSellers } from "@/server/db/products";
 
 async function BestSellers() {
   // add products to the database
@@ -107,9 +108,12 @@ async function BestSellers() {
   //   ]; // Placeholder for best seller items, can be fetched from a database or API later
 
   //   const bestSellers = await db.product.findMany(); // This can be replaced with dynamic data later
-  const bestSellers = await db.product.findMany({
-    include: { sizes: true, extras: true },
-  }); // Fetching best sellers from the database using Prisma Client and including sizes and extras
+
+  //   const bestSellers = await db.product.findMany({
+  //     include: { sizes: true, extras: true },
+  //   }); // Fetching best sellers from the database using Prisma Client and including sizes and extras
+
+  const bestSellers = await getBestSellers(); // Fetching best sellers from the database using a server-side function
 
   return (
     <section>
