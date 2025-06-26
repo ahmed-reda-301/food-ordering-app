@@ -28,32 +28,35 @@
 
 import MainHeading from "@/components/main-heading";
 import Menu from "@/components/menu";
+import { db } from "@/lib/prisma"; // Import your database client
 
-function BestSellers() {
-  const bestSellers = [
-    // Example best seller items, can be replaced with dynamic data later
-    {
-      id: 1,
-      name: "Margherita Pizza",
-      description: "Classic pizza with fresh mozzarella and basil",
-      basePrice: 12.99,
-      imageUrl: "/assets/images/margherita.png",
-    },
-    {
-      id: 2,
-      name: "Pepperoni Pizza",
-      description: "Spicy pepperoni with melted cheese",
-      basePrice: 14.99,
-      imageUrl: "/assets/images/pepperoni.png",
-    },
-    {
-      id: 3,
-      name: "Veggie Supreme",
-      description: "Loaded with fresh vegetables and herbs",
-      basePrice: 11.99,
-      imageUrl: "/assets/images/veggie.png",
-    },
-  ]; // Placeholder for best seller items, can be fetched from a database or API later
+async function BestSellers() {
+//   const bestSellers = [
+//     // Example best seller items, can be replaced with dynamic data later
+//     {
+//       id: 1,
+//       name: "Margherita Pizza",
+//       description: "Classic pizza with fresh mozzarella and basil",
+//       price: 12.99,
+//       imageUrl: "/assets/images/margherita.png",
+//     },
+//     {
+//       id: 2,
+//       name: "Pepperoni Pizza",
+//       description: "Spicy pepperoni with melted cheese",
+//       basePrice: 14.99,
+//       imageUrl: "/assets/images/pepperoni.png",
+//     },
+//     {
+//       id: 3,
+//       name: "Veggie Supreme",
+//       description: "Loaded with fresh vegetables and herbs",
+//       basePrice: 11.99,
+//       imageUrl: "/assets/images/veggie.png",
+//     },
+//   ]; // Placeholder for best seller items, can be fetched from a database or API later
+
+    const bestSellers = await db.product.findMany(); // This can be replaced with dynamic data later
   return (
     <section>
       <div className="container">

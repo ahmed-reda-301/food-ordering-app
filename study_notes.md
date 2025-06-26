@@ -314,6 +314,14 @@ export default function Home() {
    - Create a file like `src/lib/prisma.ts` to ensure a single PrismaClient instance is used (see [prisma.ts](src/lib/prisma.ts)).
 8. **Test the connection:**
    - Try querying the database from a page or API route (e.g., [page.tsx](src/app/page.tsx)) to ensure everything is working.
+9. enter data to database use Prisma Studio
+    https://www.prisma.io/docs/orm/tools/prisma-studio
+
+    Run npx prisma studio in your terminal.
+
+```bash
+   npx prisma studio
+   ```
 
 > This setup ensures your app is ready for robust, type-safe database access with Prisma and PostgreSQL.
 
