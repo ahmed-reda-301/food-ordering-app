@@ -314,199 +314,31 @@ export default function Home() {
    - Create a file like `src/lib/prisma.ts` to ensure a single PrismaClient instance is used (see [prisma.ts](src/lib/prisma.ts)).
 8. **Test the connection:**
    - Try querying the database from a page or API route (e.g., [page.tsx](src/app/page.tsx)) to ensure everything is working.
-9. Seed your database using Prisma Studio or programmatically with Prisma commands:
+9. enter data to database use Prisma Studio
+    https://www.prisma.io/docs/orm/tools/prisma-studio
 
-   - You can use Prisma Studio for a user-friendly GUI to add and edit data:
-     https://www.prisma.io/docs/orm/tools/prisma-studio
+    Run npx prisma studio in your terminal.
 
-     Run the following command in your terminal:
-
-     ```bash
-     npx prisma studio
-     ```
-
-   - Alternatively, you can seed your database programmatically using Prisma commands in your code (see example in src/app/page.tsx):
-     ```ts
-     // Example: Add products, sizes, and extras directly from code
-     await db.product.createMany({
-       data: [
-         {
-           name: "Margherita Pizza",
-           description: "Classic pizza with fresh mozzarella and basil",
-           basePrice: 12.99,
-           imageUrl: "/assets/images/margherita.png",
-         },
-         {
-           name: "Pepperoni Pizza",
-           description: "Spicy pepperoni with melted cheese",
-           basePrice: 14.99,
-           imageUrl: "/assets/images/pepperoni.png",
-         },
-         {
-           name: "Veggie Supreme",
-           description: "Loaded with fresh vegetables and herbs",
-           basePrice: 11.99,
-           imageUrl: "/assets/images/veggie.png",
-         },
-       ],
-     });
-     // Add sizes and extras in a similar way, linking them to products via productId
-     ```
-   - After any changes to your schema.prisma, update your database with:
-     ```bash
-     npx prisma migrate dev --name update-schema
-     npx prisma generate
-     ```
-   - You can now fetch dynamic data in components like BestSellers using the Prisma Client.
+```bash
+   npx prisma studio
+   ```
 
 > This setup ensures your app is ready for robust, type-safe database access with Prisma and PostgreSQL.
 
 ## 02:40:06 - Next.js Caching
 
-    - For better maintainability and scalability, move all database-related functions (such as fetching products, best sellers, etc.) into dedicated files inside a folder like `src/server/db/`.
-    - Example: Create a file `src/server/db/products.ts` and define functions like `getBestSellers` there.
-    - Import and use these functions in your components or API routes instead of writing database logic directly in the component files.
-    - This approach keeps your codebase clean, modular, and easier to test and extend.
-
-    ```ts
-    // Example: src/server/db/products.ts
-    import { db } from "@/lib/prisma";
-
-    export const getBestSellers = async () => {
-    return db.product.findMany({
-        include: { sizes: true, extras: true },
-    });
-    };
-    ```
-
-    ```ts
-    // Usage in a component or API route
-    import { getBestSellers } from "@/server/db/products";
-
-    const bestSellers = await getBestSellers();
-    ```
-
-    > Always keep your database access logic in one place for consistency and easier updates.
-
 - Use Next.js caching functions like `revalidate` and `getStaticProps` to improve performance.
 - [Official Docs](https://nextjs.org/docs/app/building-your-application/caching)
 
-## 02:50:00 - Add and Use Server-Side Caching
-
-To improve performance and reduce database load, implement server-side caching for your data fetching functions:
-
-1. **Create a cache utility:**
-
-   - Add a new file at `src/lib/cache.ts` with the following code:
-
-   ```ts
-   import { unstable_cache as nextCache } from "next/cache";
-   import { cache as reactCache } from "react";
-
-   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-   type Callback = (...args: any[]) => Promise<any>;
-
-   export function cache<T extends Callback>(
-     cb: T,
-     keyParts: string[],
-     options: { revalidate?: number | false; tags?: string[] }
-   ) {
-     return nextCache(reactCache(cb), keyParts, options);
-   }
-   ```
-
-   - This utility combines React and Next.js caching for optimal server-side data caching and revalidation.
-
-2. **Refactor your database functions to use caching:**
-
-   - In your database logic files (e.g., `src/server/db/products.ts`), wrap your data fetching functions with the new cache utility:
-
-   ```ts
-   import { cache } from "@/lib/cache";
-   import { db } from "@/lib/prisma";
-
-   export const getBestSellers = cache(
-     () => {
-       return db.product.findMany({
-         include: { sizes: true, extras: true },
-       });
-     },
-     ["best-sellers"],
-     { revalidate: 3600 } // Revalidate every hour
-   );
-   ```
-
-   - This ensures that repeated requests for best sellers are served from cache, and the data is refreshed every hour.
-
-3. **Use the cached function in your components or API routes:**
-   - Import and call the cached function as usual:
-   ```ts
-   import { getBestSellers } from "@/server/db/products";
-   const bestSellers = await getBestSellers();
-   ```
-
-**Best Practices:**
-
-- Use descriptive cache keys for each data set.
-- Set appropriate revalidation intervals based on how often your data changes.
-- Use cache tags if you need to invalidate specific cache entries programmatically.
-
-> Adding server-side caching is essential for scaling your app and delivering fast, consistent data to users.
-
-## 02:53:00 - Testing and Debugging Server-Side Caching
-
-After implementing server-side caching, it's important to verify that your cache is working as expected and to know some useful cache-related shortcuts:
-
-1. **How to test if caching works:**
-
-   - Add a console log or timestamp inside your cached function. For example:
-
-   ```ts
-   export const getBestSellers = cache(
-     () => {
-       console.log("Fetching from database:", new Date().toISOString());
-       return db.product.findMany({
-         include: { sizes: true, extras: true },
-       });
-     },
-     ["best-sellers"],
-     { revalidate: 3600 }
-   );
-   ```
-
-   - On the first request, you should see the log in your server console. Subsequent requests within the revalidation window should NOT trigger the log, indicating the data is served from cache.
-   - After the revalidation period, the log should appear again, showing a fresh fetch.
-
-2. **Cache invalidation and development shortcuts:**
-
-   - In development, Next.js may automatically bypass or clear cache on file changes or server restarts.
-   - To manually clear the cache in production press (ctrl + shift + r), you can use cache tags and the Next.js API for cache invalidation. See [Next.js Cache API](https://nextjs.org/docs/app/building-your-application/caching#on-demand-revalidation) for details.
-   - You can also change the cache key (e.g., add a version or timestamp) to force a new cache entry.
-
-3. **Useful tips:**
-   - Use unique and descriptive cache keys for each dataset.
-   - Use the `tags` option to group related cache entries for easier invalidation.
-   - Monitor your server logs to ensure caching is reducing database calls as expected.
-
-> Testing and understanding your cache behavior is crucial for reliable, high-performance data fetching in production.
-
 ## 02:54:42 - Update Database Schema
-
-
 
 1. Edit `prisma/schema.prisma` to add new tables or columns.
 2. Run Prisma commands to update the database:
    ```bash
-   npx prisma migrate reset
+   npx prisma migrate dev --name update-schema
    npx prisma generate
-   npx prisma migrate dev
-   npx prisma studio
    ```
 
-  // to delete all products, sizes, and extras from the database
-  await db.product.deleteMany();
-  await db.size.deleteMany();
-  await db.extra.deleteMany();
 ## 03:18:41 - About Page
 
 1. Create a new page: `src/app/about/page.tsx`
@@ -534,6 +366,7 @@ After implementing server-side caching, it's important to verify that your cache
 3. Show a cart summary in the header or a separate page.
 
 ## 05:31:15 - Add Internationalization in Next.js
+
 1. Enable i18n in `next.config.js`:
    ```js
    i18n: {

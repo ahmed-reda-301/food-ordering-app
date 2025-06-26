@@ -2,7 +2,6 @@ import About from "@/components/about";
 import BestSellers from "./_components/BestSellers";
 import Hero from "./_components/Hero";
 import { db } from "@/lib/prisma";
-import Contact from "@/components/contact";
 export default async function Home() {
   // This is the main page of your application
   // It serves as the entry point for your app and can be used to display the homepage content.
@@ -16,12 +15,12 @@ export default async function Home() {
   // Uncomment the following line to log the products fetched from the database
   console.log("Fetched products:", products); // This will log all products to the console taht meening you can see them in the server logs
 
+
   return (
     <main>
       <Hero />
       <BestSellers />
       <About />
-      <Contact />
     </main>
   );
 }

@@ -1,32 +1,3 @@
-// -----------------------------------------------------------------------------
-// src/components/about/index.tsx
-//
-// About Component
-// ---------------
-// Purpose:
-// - Renders the "About Us" section for the pizzeria, including a heading and descriptive text.
-// - Used to introduce the restaurant, its philosophy, and what makes it special.
-//
-// Features:
-// - Uses the MainHeading component for a consistent section header.
-// - Contains multiple paragraphs describing the story, quality, and experience.
-// - Responsive and centered layout for optimal readability.
-//
-// Usage:
-//   <About />
-//
-// Example:
-//   <section>
-//     <div className="container text-center">
-//       <MainHeading subTitle="Our Story" title="About Us" />
-//       ...
-//     </div>
-//   </section>
-//
-// Notes:
-// - This component is used in both the About page and the homepage.
-// -----------------------------------------------------------------------------
-
 import { Routes } from '@/constants/enums';
 import MainHeading from '../main-heading';
 
