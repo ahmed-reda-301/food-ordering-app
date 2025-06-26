@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/header";
+import Footer from "@/components/footer";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -24,7 +25,28 @@ export default function RootLayout({
       <body>
         <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );
 }
+//
+// Usage of Footer Component:
+// - The Footer component is imported and rendered in the RootLayout to ensure it appears at the bottom of every page.
+// - This provides consistent branding and copyright info across the app.
+//
+// Example:
+// import Footer from "@/components/footer";
+//
+// export default function RootLayout({ children }) {
+//   return (
+//     <html lang="en" className={roboto.className}>
+//       <body>
+//         <Header />
+//         {children}
+//         <Footer />
+//       </body>
+//     </html>
+//   );
+// }
+// -----------------------------------------------------------------------------
