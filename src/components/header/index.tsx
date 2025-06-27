@@ -1,6 +1,7 @@
 import { Routes } from "@/constants/enums";
 import Link from "../link"; // Adjust the import path as necessary
 import Navbar from "./Navbar";
+import CartButton from "./cart-button";
 
 function Header() {
   return (
@@ -14,6 +15,7 @@ function Header() {
           🍕 Pizza
         </Link>
         <Navbar />
+        <CartButton />
       </div>
     </header>
   );
