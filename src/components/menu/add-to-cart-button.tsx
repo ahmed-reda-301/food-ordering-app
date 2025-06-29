@@ -65,6 +65,16 @@ function AddToCartButton({ item }: { item: ProductWithRelations }) {
     cart.find((element) => element.id === item.id)?.extras || [];
   const [selectedExtras, setSelectedExtras] = useState<Extra[]>(defaultExtras);
 
+  let totalPrice = item.basePrice;
+  if (selectedSize) {
+    totalPrice += selectedSize.price;
+  }
+  if (selectedExtras.length > 0) {
+    for (const extra of selectedExtras) {
+      totalPrice += extra.price;
+    }
+  }
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -106,7 +116,7 @@ function AddToCartButton({ item }: { item: ProductWithRelations }) {
         </div>
         <DialogFooter>
           <Button type="submit" className="w-full h-10">
-            Add to cart {formatCurrency(item.basePrice)}
+            Add to cart {formatCurrency(totalPrice)}
           </Button>
         </DialogFooter>
       </DialogContent>
