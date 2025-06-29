@@ -37,8 +37,12 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { formatCurrency } from "@/lib/formatters";
 import { Checkbox } from "../ui/checkbox";
-import { Extra, Size } from "@prisma/client";
+import { Extra, ProductSizes, Size } from "@prisma/client";
 import { ProductWithRelations } from "@/types/product";
+import { CartItem, selectCartItems } from "@/redux/features/cart/cartSlice";
+import { RootState } from "@/redux/store";
+import { useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 function AddToCartButton({ item }: { item: ProductWithRelations }) {
   //   const sizes = [
@@ -51,6 +55,12 @@ function AddToCartButton({ item }: { item: ProductWithRelations }) {
   //     { id: crypto.randomUUID(), name: "Tomato", price: 4 },
   //     { id: crypto.randomUUID(), name: "Onion", price: 6 },
   //   ];
+
+  const cart = useAppSelector(selectCartItems);
+  const defaultSize =
+    cart.find((element) => element.id === item.id)?.size ||
+    item.sizes.find((size) => size.name === ProductSizes.SMALL);
+  const [selectedSize, setSelectedSize] = useState<Size>(defaultSize!);
 
   return (
     <Dialog>
@@ -74,7 +84,12 @@ function AddToCartButton({ item }: { item: ProductWithRelations }) {
         <div className="space-y-10">
           <div className="space-y-4 text-center">
             <Label htmlFor="pick-size">Pick your size</Label>
-            <PickSize sizes={item.sizes} item={item} />
+            <PickSize
+              sizes={item.sizes}
+              item={item}
+              selectedSize={selectedSize}
+              setSelectedSize={setSelectedSize}
+            />
           </div>
           <div className="space-y-4 text-center">
             <Label htmlFor="add-extras">Any extras?</Label>
@@ -96,8 +111,12 @@ export default AddToCartButton;
 function PickSize({
   sizes,
   item,
+  selectedSize,
+  setSelectedSize,
 }: {
   sizes: Size[];
+  selectedSize: Size;
+  setSelectedSize: React.Dispatch<React.SetStateAction<Size>>;
   item: ProductWithRelations;
 }) {
   return (
@@ -107,7 +126,12 @@ function PickSize({
           key={size.id}
           className="flex items-center space-x-2 border border-gray-100 rounded-md p-4"
         >
-          <RadioGroupItem value={size.name} id={size.id} />
+          <RadioGroupItem
+            value={selectedSize.name}
+            checked={selectedSize.id === size.id}
+            id={size.id}
+            onClick={() => setSelectedSize(size)}
+          />
           <Label htmlFor={size.id}>
             {size.name} {formatCurrency(size.price + item.basePrice)}
           </Label>

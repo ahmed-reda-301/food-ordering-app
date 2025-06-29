@@ -49,9 +49,7 @@ async function MenuPage() {
           </section>
         ))
       ) : (
-        <p className="text-accent text-center py-20">
-            No categories found
-        </p>
+        <p className="text-accent text-center py-20">No categories found</p>
       )}
     </main>
   );

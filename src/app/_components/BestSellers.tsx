@@ -102,9 +102,9 @@ async function BestSellers() {
 
   // const _sizes = await db.size.createMany({
   //   data: [
-  //       { name: "MEDIUM", price: 2, productId: "cmcdxkjsy001h8rn1zgsr20kl" },
-  //       { name: "LARGE", price: 4, productId: "cmcdxkjsy001h8rn1zgsr20kl" },
-  //       { name: "SMALL", price: 0, productId: "cmcdxkjsy001h8rn1zgsr20kl" }, // Replace with actual product IDs
+  //       { name: "MEDIUM", price: 2, productId: "cmce0c7w9002h8rn1coiyycyf" },
+  //       { name: "LARGE", price: 4, productId: "cmce0c7w9002h8rn1coiyycyf" },
+  //       { name: "SMALL", price: 0, productId: "cmce0c7w9002h8rn1coiyycyf" }, // Replace with actual product IDs
   //     ],
   //   });
 
@@ -112,11 +112,11 @@ async function BestSellers() {
 
   // const _extras = await db.extra.createMany({
   //   data: [
-  //       { name: "CHEESE", price: 2, productId: "cmcdxkjsy001h8rn1zgsr20kl" }, // Replace with actual product IDs
-  //       { name: "BACON", price: 3, productId: "cmcdxkjsy001h8rn1zgsr20kl" },
-  //       { name: "TOMATO", price: 1, productId: "cmcdxkjsy001h8rn1zgsr20kl" },
-  //       { name: "ONION", price: 1, productId: "cmcdxkjsy001h8rn1zgsr20kl" },
-  //       { name: "PEPPER", price: 1, productId: "cmcdxkjsy001h8rn1zgsr20kl" },
+  //     { name: "CHEESE", price: 2, productId: "cmce0c7w9002h8rn1coiyycyf" }, // Replace with actual product IDs
+  //     { name: "BACON", price: 3, productId: "cmce0c7w9002h8rn1coiyycyf" },
+  //     { name: "TOMATO", price: 1, productId: "cmce0c7w9002h8rn1coiyycyf" },
+  //     { name: "ONION", price: 1, productId: "cmce0c7w9002h8rn1coiyycyf" },
+  //     { name: "PEPPER", price: 1, productId: "cmce0c7w9002h8rn1coiyycyf" },
   //   ],
   // });
 

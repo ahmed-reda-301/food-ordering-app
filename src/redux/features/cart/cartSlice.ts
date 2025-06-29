@@ -26,9 +26,9 @@
 // - Extend this slice to support more cart features (discounts, user info, etc.).
 // -----------------------------------------------------------------------------
 
-import { RootState } from '@/redux/store';
-import { Extra, Size } from '@prisma/client';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from "@/redux/store";
+import { Extra, Size } from "@prisma/client";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type CartItem = {
   name: string;
@@ -43,14 +43,14 @@ export type CartItem = {
 type CartState = {
   items: CartItem[];
 };
-const initialCartItems = localStorage.getItem('cartItems');
+const initialCartItems = localStorage.getItem("cartItems");
 
 const initialState: CartState = {
   items: initialCartItems ? JSON.parse(initialCartItems) : [],
 };
 
 export const cartSlice = createSlice({
-  name: 'cart',
+  name: "cart",
   initialState,
   reducers: {
     addCartItem: (state, action: PayloadAction<CartItem>) => {
