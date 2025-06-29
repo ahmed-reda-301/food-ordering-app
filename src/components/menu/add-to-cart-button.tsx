@@ -61,6 +61,9 @@ function AddToCartButton({ item }: { item: ProductWithRelations }) {
     cart.find((element) => element.id === item.id)?.size ||
     item.sizes.find((size) => size.name === ProductSizes.SMALL);
   const [selectedSize, setSelectedSize] = useState<Size>(defaultSize!);
+  const defaultExtras =
+    cart.find((element) => element.id === item.id)?.extras || [];
+  const [selectedExtras, setSelectedExtras] = useState<Extra[]>(defaultExtras);
 
   return (
     <Dialog>
@@ -140,13 +143,35 @@ function PickSize({
     </RadioGroup>
   );
 }
-function Extras({ extras }: { extras: Extra[] }) {
+function Extras({
+  extras,
+  selectedExtras,
+  setSelectedExtras,
+}: {
+  extras: Extra[];
+  selectedExtras: Extra[];
+  setSelectedExtras: React.Dispatch<React.SetStateAction<Extra[]>>;
+}) {
+  const handleExtra = (extra: Extra) => {
+    if (selectedExtras.find((e) => e.id === extra.id)) {
+      const filteredSelectedExtras = selectedExtras.filter(
+        (item) => item.id !== extra.id
+      );
+      setSelectedExtras(filteredSelectedExtras);
+    } else {
+      setSelectedExtras((prev) => [...prev, extra]);
+    }
+  };
   return extras.map((extra) => (
     <div
       key={extra.id}
       className="flex items-center space-x-2 border border-gray-100 rounded-md p-4"
     >
-      <Checkbox id={extra.id} />
+      <Checkbox
+        id={extra.id}
+        onClick={() => handleExtra(extra)}
+        checked={Boolean(selectedExtras.find((e) => e.id === extra.id))}
+      />
       <Label
         htmlFor={extra.id}
         className="text-sm text-accent font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
