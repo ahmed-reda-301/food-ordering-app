@@ -96,12 +96,17 @@ function AddToCartButton({ item }: { item: ProductWithRelations }) {
           </div>
           <div className="space-y-4 text-center">
             <Label htmlFor="add-extras">Any extras?</Label>
-            <Extras extras={item.extras} />
+
+            <Extras
+              extras={item.extras}
+              selectedExtras={selectedExtras}
+              setSelectedExtras={setSelectedExtras}
+            />
           </div>
         </div>
         <DialogFooter>
           <Button type="submit" className="w-full h-10">
-            Add to cart
+            Add to cart {formatCurrency(item.basePrice)}
           </Button>
         </DialogFooter>
       </DialogContent>
