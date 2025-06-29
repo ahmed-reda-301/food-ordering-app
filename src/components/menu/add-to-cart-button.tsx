@@ -39,10 +39,16 @@ import { formatCurrency } from "@/lib/formatters";
 import { Checkbox } from "../ui/checkbox";
 import { Extra, ProductSizes, Size } from "@prisma/client";
 import { ProductWithRelations } from "@/types/product";
-import { CartItem, selectCartItems } from "@/redux/features/cart/cartSlice";
+import { CartItem } from "@/redux/features/cart/cartSlice";
 import { RootState } from "@/redux/store";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import {
+  addCartItem,
+  removeCartItem,
+  removeItemFromCart,
+  selectCartItems,
+} from '@/redux/features/cart/cartSlice';
 
 function AddToCartButton({ item }: { item: ProductWithRelations }) {
   //   const sizes = [
@@ -74,6 +80,20 @@ function AddToCartButton({ item }: { item: ProductWithRelations }) {
       totalPrice += extra.price;
     }
   }
+  const dispatch = useAppDispatch();
+
+  const handleAddToCart = () => {
+    dispatch(
+      addCartItem({
+        basePrice: item.basePrice,
+        id: item.id,
+        image: item.imageUrl,
+        name: item.name,
+        size: selectedSize,
+        extras: selectedExtras,
+      })
+    );
+  };
 
   return (
     <Dialog>
@@ -115,7 +135,11 @@ function AddToCartButton({ item }: { item: ProductWithRelations }) {
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit" className="w-full h-10">
+          <Button
+            type="submit"
+            onClick={handleAddToCart}
+            className="w-full h-10"
+          >
             Add to cart {formatCurrency(totalPrice)}
           </Button>
         </DialogFooter>
