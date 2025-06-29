@@ -5,21 +5,29 @@
  * AddToCartButton Component
  * ------------------------
  * Purpose:
- * - Provides a button to add a menu item to the shopping cart.
- * - Handles click events to trigger cart state updates (e.g., via Redux or context).
+ * - Provides a dialog-based UI for adding a menu item to the shopping cart with custom size and extras.
+ * - Integrates with Redux Toolkit for cart state management.
  *
  * Features:
- * - Receives item/product ID as a prop.
- * - Can show loading or success state after click.
- * - Styled with Shadcn UI button variants for consistency.
+ * - Allows users to select a size and multiple extras for a product.
+ * - Dynamically calculates and displays the total price based on selections.
+ * - Shows current quantity in cart and enables increment/decrement/removal.
+ * - Uses Shadcn UI components for consistent design (Button, Dialog, RadioGroup, Checkbox, etc.).
+ * - Handles both adding new items and updating existing ones in the cart.
+ * - Fully type-safe with TypeScript and integrates with Prisma types.
  *
  * Usage:
- * <AddToCartButton productId={item.id} />
+ *   <AddToCartButton item={product} />
  *
- * Example:
- * <MenuItem ...>
- *   <AddToCartButton productId={item.id} />
- * </MenuItem>
+ * Best Practices:
+ * - Keeps UI logic and cart logic separated: UI state is managed locally, cart state is managed by Redux.
+ * - Uses utility functions for quantity and price calculations.
+ * - Designed to be reusable for any menu item.
+ * - Handles SSR/CSR differences by only using browser APIs in client components.
+ *
+ * Extensibility:
+ * - Can be extended to support more product options, discounts, or validation.
+ * - Can be integrated with analytics or user feedback for better UX.
  */
 
 import { Button } from "@/components/ui/button";
@@ -48,7 +56,8 @@ import {
   removeCartItem,
   removeItemFromCart,
   selectCartItems,
-} from '@/redux/features/cart/cartSlice';
+} from "@/redux/features/cart/cartSlice";
+import { getItemQuantity } from "@/lib/cart";
 
 function AddToCartButton({ item }: { item: ProductWithRelations }) {
   //   const sizes = [
@@ -61,8 +70,10 @@ function AddToCartButton({ item }: { item: ProductWithRelations }) {
   //     { id: crypto.randomUUID(), name: "Tomato", price: 4 },
   //     { id: crypto.randomUUID(), name: "Onion", price: 6 },
   //   ];
+    const cart = useAppSelector(selectCartItems);
+  const quantity = getItemQuantity(item.id, cart);
 
-  const cart = useAppSelector(selectCartItems);
+
   const defaultSize =
     cart.find((element) => element.id === item.id)?.size ||
     item.sizes.find((size) => size.name === ProductSizes.SMALL);
@@ -135,13 +146,22 @@ function AddToCartButton({ item }: { item: ProductWithRelations }) {
           </div>
         </div>
         <DialogFooter>
-          <Button
-            type="submit"
-            onClick={handleAddToCart}
-            className="w-full h-10"
-          >
-            Add to cart {formatCurrency(totalPrice)}
-          </Button>
+          {quantity === 0 ? (
+            <Button
+              type="submit"
+              onClick={handleAddToCart}
+              className="w-full h-10"
+            >
+              Add to cart {formatCurrency(totalPrice)}
+            </Button>
+          ) : (
+            <ChooseQuantity
+              quantity={quantity}
+              item={item}
+              selectedSize={selectedSize}
+              selectedExtras={selectedExtras}
+            />
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -220,3 +240,55 @@ function Extras({
     </div>
   ));
 }
+
+const ChooseQuantity = ({
+  quantity,
+  item,
+  selectedExtras,
+  selectedSize,
+}: {
+  quantity: number;
+  selectedExtras: Extra[];
+  selectedSize: Size;
+  item: ProductWithRelations;
+}) => {
+  const dispatch = useAppDispatch();
+  return (
+    <div className="flex items-center flex-col gap-2 mt-4 w-full">
+      <div className="flex items-center justify-center gap-2">
+        <Button
+          variant="outline"
+          onClick={() => dispatch(removeCartItem({ id: item.id }))}
+        >
+          -
+        </Button>
+        <div>
+          <span className="text-black">{quantity} in cart</span>
+        </div>
+        <Button
+          variant="outline"
+          onClick={() =>
+            dispatch(
+              addCartItem({
+                basePrice: item.basePrice,
+                id: item.id,
+                image: item.imageUrl,
+                name: item.name,
+                extras: selectedExtras,
+                size: selectedSize,
+              })
+            )
+          }
+        >
+          +
+        </Button>
+      </div>
+      <Button
+        size="sm"
+        onClick={() => dispatch(removeItemFromCart({ id: item.id }))}
+      >
+        Remove
+      </Button>
+    </div>
+  );
+};
