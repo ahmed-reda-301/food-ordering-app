@@ -1,25 +1,3 @@
-// -----------------------------------------------------------------------------
-// src/dictionaries/
-//
-// Dictionaries Folder
-// ------------------
-// Purpose:
-// - Contains JSON files for each supported language (e.g., ar.json, en.json).
-// - Each file holds all translation keys and values for the app in that language.
-//
-// Features:
-// - ar.json: Arabic translations.
-// - en.json: English translations.
-// - Extendable: Add more JSON files for additional languages.
-//
-// Usage:
-//   Used by the translation utility to load the correct dictionary at runtime.
-//
-// Best Practices:
-// - Keep translation keys consistent across all language files.
-// - Organize keys by feature or section for maintainability.
-// -----------------------------------------------------------------------------
-
 {
   "logo": "بيتزا",
   "home": {
