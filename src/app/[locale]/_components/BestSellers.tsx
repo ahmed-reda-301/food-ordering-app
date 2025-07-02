@@ -28,7 +28,9 @@
 
 import MainHeading from "@/components/main-heading";
 import Menu from "@/components/menu";
+import { getCurrentLocale } from "@/lib/getCurrentLocale";
 import { db } from "@/lib/prisma"; // Import your database client
+import getTrans from "@/lib/translation";
 import { getBestSellers } from "@/server/db/products";
 
 async function BestSellers() {
@@ -152,12 +154,17 @@ async function BestSellers() {
   //   }); // Fetching best sellers from the database using Prisma Client and including sizes and extras
 
   const bestSellers = await getBestSellers(); // Fetching best sellers from the database using a server-side function
-
+  const locale = await getCurrentLocale();
+  const { home } = await getTrans(locale);
+  const { bestSeller } = home;
   return (
     <section>
-      <div className="container">
-        <div className="text-center mb-4">
-          <MainHeading subTitle={"checkOut"} title={"Our Best Sellers"} />
+      <div className='container'>
+        <div className='text-center mb-4'>
+          <MainHeading
+            subTitle={bestSeller.checkOut}
+            title={bestSeller.OurBestSellers}
+          />
         </div>
         <Menu items={bestSellers} />
       </div>
