@@ -5,9 +5,11 @@ import Link from "../link";
 import { Button, buttonVariants } from "../ui/button";
 import { useState } from "react";
 import { Menu, XIcon } from "lucide-react"; // lucide-react is a popular icon library for React
+import { useParams, usePathname } from "next/navigation";
 function Navbar({ translations }: { translations: Translations }) {
   const [openMenu, setOpenMenu] = useState(false);
-
+  const pathname = usePathname();
+    const { locale } = useParams();
   const links = [
     {
       id: "menu",
@@ -57,12 +59,11 @@ function Navbar({ translations }: { translations: Translations }) {
           <li key={link.id}>
             <Link
               href={link.href}
-              className={`${
-                link.href === `${Routes.AUTH}/${Pages.LOGIN}`
-                  ? `${buttonVariants({ size: "lg" })} !px-8 !rounded-full`
-                  : "text-accent hover:text-primary duration-200 transition-colors"
-              }
-                 font-semibold`}
+              className={`hover:text-primary duration-200 transition-colors font-semibold ${
+                pathname.startsWith(`/${locale}/${link.href}`)
+                  ? "text-primary"
+                  : "text-accent"
+              }`}
             >
               {link.title}
             </Link>
