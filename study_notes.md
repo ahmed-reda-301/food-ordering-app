@@ -740,6 +740,26 @@ In this project, Redux Toolkit was set up for the shopping cart state as follows
 
 ## 05:31:15 - Add Internationalization in Next.js
 
+https://nextjs.org/docs/app/guides/internationalization
+
+create [middleware.ts ](src/middleware.ts) file 
+
+create [[locale]](src/app/[locale]) folder and move all files and folder in [app](src/app) to it 
+
+install  negotiator @formatjs/intl-localematcher
+
+   ```bash
+npm add negotiator @formatjs/intl-localematcher
+   ```
+
+create [i18n.config.ts](src/i18n.config.ts) file 
+
+update [layout.tsx](src/app/[locale]/layout.tsx) with generateStaticParams function
+
+create  [ dictionaries](src/dictionaries) folder 
+
+create [getCurrentLocale](src/lib/getCurrentLocale.ts) and [translation](src/lib/translation.ts) files 
+ 
 1. Enable i18n in `next.config.js`:
    ```js
    i18n: {
