@@ -10,22 +10,22 @@ function Navbar() {
 
   const links = [
     {
-      id: crypto.randomUUID(),
+      id: "menu",
       title: "Menu",
       href: Routes.MENU,
     },
     {
-      id: crypto.randomUUID(),
+      id: "about",
       title: "About",
       href: Routes.ABOUT,
     },
     {
-      id: crypto.randomUUID(),
+      id: "contact",
       title: "Contact",
       href: Routes.CONTACT,
     },
     {
-      id: crypto.randomUUID(),
+      id: "login",
       title: "Login",
       href: `${Routes.AUTH}/${Pages.LOGIN}`,
     },
