@@ -647,7 +647,21 @@ Redux Toolkit is the most robust and scalable solution for managing shopping car
    export default cartSlice.reducer;
    ```
 
-4. **Provide the Store to Your App:**
+4. **Create a Typed Dispatch and Selector:**
+
+   - Create a file: `src/store/hooks.ts`
+
+   ```ts
+   import { useDispatch, useSelector } from "react-redux";
+   import type { RootState, AppDispatch } from "./index";
+
+   export const useAppDispatch = () => useDispatch<AppDispatch>();
+   export const useAppSelector = <TSelected>(
+     selector: (state: RootState) => TSelected
+   ) => useSelector(selector);
+   ```
+
+5. **Provide the Store to Your App:**
 
    - In `src/app/layout.tsx` or a custom provider file:
 
@@ -658,7 +672,7 @@ Redux Toolkit is the most robust and scalable solution for managing shopping car
    <Provider store={store}>{/* your app */}</Provider>;
    ```
 
-5. **Use Redux Hooks in Components:**
+6. **Use Redux Hooks in Components:**
 
    - To read or update cart state:
 
@@ -740,34 +754,95 @@ In this project, Redux Toolkit was set up for the shopping cart state as follows
 
 ## 05:31:15 - Add Internationalization in Next.js
 
-https://nextjs.org/docs/app/guides/internationalization
+> This section documents the actual i18n (internationalization) implementation in the project, matching the codebase and best practices.
 
-create [middleware.ts ](src/middleware.ts) file 
+### Overview
 
-create [[locale]](src/app/[locale]) folder and move all files and folder in [app](src/app) to it 
+The project uses a robust internationalization setup to support multiple languages (Arabic/English) using Next.js App Router. All static and dynamic content is fully translatable, and the language is determined from the URL (e.g., `/en`, `/ar`).
 
-install  negotiator @formatjs/intl-localematcher
+### Implementation Steps
 
+1. **Create the middleware for locale detection and redirection:**
+   - File: `src/middleware.ts`
+   - Uses `negotiator` and `@formatjs/intl-localematcher` to detect the user's preferred language from the request headers.
+   - Redirects users to the correct locale-prefixed route if missing (e.g., `/en`, `/ar`).
+   - Sets a custom `x-url` header for use in server components to extract the current locale.
+   - Ignores API/static/image/robots/sitemap routes for performance.
+   - [See actual implementation in `src/middleware.ts`]
+
+2. **Move all app files into a locale-based folder:**
+   - Create `[locale]` folder: `src/app/[locale]`
+   - Move all pages, components, and assets from `src/app/` to `src/app/[locale]/`.
+   - This enables Next.js to treat the locale as a dynamic route segment and render the correct language.
+
+3. **Install required i18n dependencies:**
    ```bash
-npm add negotiator @formatjs/intl-localematcher
+   npm install negotiator @formatjs/intl-localematcher
    ```
+   - These packages are used for language negotiation and matching in the middleware.
 
-create [i18n.config.ts](src/i18n.config.ts) file 
+4. **Create the i18n configuration file:**
+   - File: `src/i18n.config.ts`
+   - Defines supported languages, the default locale, and exports types for use throughout the app.
+   - Example:
+     ```ts
+     export const i18n = {
+       defaultLocale: 'ar',
+       locales: ['ar', 'en'],
+     };
+     ```
 
-update [layout.tsx](src/app/[locale]/layout.tsx) with generateStaticParams function
+5. **Update the root layout to support locales:**
+   - File: `src/app/[locale]/layout.tsx`
+   - Uses `generateStaticParams` to statically generate pages for each supported locale.
+   - Sets the `lang` and `dir` attributes on the `<html>` element for accessibility and RTL/LTR support.
+   - Dynamically loads the correct font (e.g., Roboto for English, Cairo for Arabic).
 
-create  [ dictionaries](src/dictionaries) folder 
+6. **Create the translation dictionaries:**
+   - Folder: `src/dictionaries/`
+   - Files: `ar.json`, `en.json`
+   - Each file contains all translation keys and values for the app in that language.
+   - Example structure:
+     ```json
+     {
+       "home": {
+         "hero": { "title": "...", ... },
+         ...
+       },
+       ...
+     }
+     ```
 
-create [getCurrentLocale](src/lib/getCurrentLocale.ts) and [translation](src/lib/translation.ts) files 
- 
-1. Enable i18n in `next.config.js`:
-   ```js
-   i18n: {
-     locales: ['ar', 'en'],
-     defaultLocale: 'ar',
-   },
-   ```
-2. Use a library like [next-intl](https://github.com/amannn/next-intl) or [react-i18next](https://react.i18next.com/).
+7. **Create translation utility functions:**
+   - File: `src/lib/translation.ts`
+     - Dynamically imports the correct dictionary based on the current locale.
+   - File: `src/lib/getCurrentLocale.ts`
+     - Extracts the current locale from the `x-url` header set by the middleware.
+
+8. **Update all components and pages to use translations:**
+   - All UI components and pages fetch the current locale and load the appropriate translations using the utilities above.
+   - Example usage:
+     ```tsx
+     const locale = await getCurrentLocale();
+     const { home } = await getTrans(locale);
+     const { hero } = home;
+     ```
+   - All static text is now stored in the translation files for full i18n support.
+
+9. **Add a language switcher component:**
+   - File: `src/components/header/language-switcher.tsx`
+   - Allows users to switch between Arabic and English by updating the locale segment in the URL.
+   - Uses Next.js navigation hooks for seamless client-side navigation.
+
+10. **Best Practices:**
+    - Keep all static text in translation files for maintainability.
+    - Use semantic HTML and set `lang`/`dir` attributes for accessibility and SEO.
+    - Centralize locale detection and translation logic for consistency.
+    - Use a language switcher for user-friendly language toggling.
+
+---
+
+> This i18n setup ensures a scalable, maintainable, and production-ready multilingual Next.js application. All steps above are reflected in the actual project codebase and commit history.
 
 ## 06:23:53 - The Next Parts?
 
