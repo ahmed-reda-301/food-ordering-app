@@ -5,28 +5,28 @@ import Link from "../link";
 import { Button, buttonVariants } from "../ui/button";
 import { useState } from "react";
 import { Menu, XIcon } from "lucide-react"; // lucide-react is a popular icon library for React
-function Navbar() {
+function Navbar({ translations }: { translations: Translations }) {
   const [openMenu, setOpenMenu] = useState(false);
 
   const links = [
     {
       id: "menu",
-      title: "Menu",
+      title: translations.navbar.menu,
       href: Routes.MENU,
     },
     {
       id: "about",
-      title: "About",
+      title: translations.navbar.about,
       href: Routes.ABOUT,
     },
     {
       id: "contact",
-      title: "Contact",
+      title: translations.navbar.contact,
       href: Routes.CONTACT,
     },
     {
       id: "login",
-      title: "Login",
+      title: translations.navbar.login,
       href: `${Routes.AUTH}/${Pages.LOGIN}`,
     },
   ];
