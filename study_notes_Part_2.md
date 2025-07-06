@@ -1,0 +1,105 @@
+# Step-by-Step Guide: Building a Food Ordering App with Next.js (Part 2)
+
+**Video Reference:** [Simple Arab Code - Part 2](https://www.youtube.com/watch?v=hDrt1ifv94o&ab_channel=SimpleArabCode)
+
+---
+
+## ⏱️ Timestamps & Key Steps
+
+### 00:00:00 - Introduction
+- This part starts with a recap of what was built in Part 1 (UI, menu, cart, i18n, database setup).
+- The instructor explains the new focus: adding authentication, admin features, and advanced data management.
+- Key goals for Part 2:
+  - Implement secure user authentication (sign in, sign up, session management).
+  - Add protected routes so only logged-in users (or admins) can access certain pages.
+  - Build an admin dashboard for managing users, categories, and menu items.
+  - Enable CRUD operations for users, categories, and products directly from the dashboard.
+  - Integrate NextAuth.js for authentication and Prisma for database operations.
+- The video also highlights best practices:
+  - Keeping authentication logic separate from UI components.
+  - Using middleware for route protection.
+  - Ensuring all admin actions are secure and validated.
+- The instructor previews the final result: a full-stack food ordering app with real authentication, admin control, and scalable code structure.
+
+### 00:04:13 - App Features
+- Features added in this part:
+  - User authentication (sign in/up)
+  - Protected routes (middleware)
+  - Admin dashboard
+  - User, category, and product management
+
+### 00:18:13 - Setup Next Auth
+- Install NextAuth.js:
+  ```bash
+  npm install next-auth
+  ```
+- Create `[...nextauth].ts` in `api/auth`.
+- Configure providers (CredentialsProvider).
+- Connect authentication to Prisma (Prisma Adapter).
+- Update environment variables (NEXTAUTH_SECRET, etc).
+
+### 00:39:11 - Add JSX for Auth Pages
+- Build sign in and sign up pages using Shadcn UI components.
+- Add input fields (email, password, name).
+- Connect pages to NextAuth actions.
+
+### 00:48:30 - Build useFormFields Hook
+- Create a custom hook for form field management (`useFormFields`).
+- Simplifies handling of form values and changes.
+- Example:
+  ```ts
+  const { fields, handleChange } = useFormFields({ email: '', password: '' });
+  ```
+
+### 01:20:03 - Add Signin Form (signin action)
+- Implement sign in logic using NextAuth.
+- Handle errors and responses.
+- Redirect user after successful sign in.
+
+### 02:24:09 - Add Signup Form (signup action)
+- Implement sign up logic with validation.
+- Add new user to the database.
+- Auto sign in after registration.
+
+### 03:02:27 - Protected Routes (Next Middleware)
+- Use Next.js middleware to protect admin pages.
+- Redirect unauthorized users to the login page.
+- Example:
+  ```ts
+  // src/middleware.ts
+  if (!session || !session.user.isAdmin) {
+    return NextResponse.redirect('/auth/login');
+  }
+  ```
+
+### 04:07:52 - Add EditUserForm Component
+- Build a form to edit user data (name, email, role).
+- Connect the form to the database for direct updates.
+
+### 05:52:55 - Add AdminTabs Component
+- Build a tabs component for the admin dashboard (Users, Categories, Products, Orders).
+- Easy navigation between admin sections.
+
+### 06:00:47 - Add Categories Page
+- Build the categories management page (list, add, edit, delete).
+- Connect the page to the database via Prisma.
+
+### 06:46:45 - Add MenuItems Page
+- Build the products management page (list, add, edit, delete).
+- Support linking products to categories, sizes, and extras.
+
+### 10:17:01 - Add Users Page
+- Build the users management page (list, edit, delete, change role).
+- Protect sensitive operations (role changes).
+
+### 10:33:43 - Test App Scenarios
+- Test all scenarios:
+  - Register a new user
+  - Sign in as user/admin
+  - Test protected routes
+  - Add/edit categories and products
+  - Manage users from the admin dashboard
+
+---
+
+> You can add more details or code samples under each step as needed. If you want a detailed explanation for any part, specify the step or timestamp.
