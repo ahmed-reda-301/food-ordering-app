@@ -26,7 +26,6 @@ import { match as matchLocale } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
 import { i18n, LanguageType } from "./i18n.config";
 
-
 function getLocale(request: NextRequest): string | undefined {
   const negotiatorHeaders: Record<string, string> = {};
   request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
@@ -48,11 +47,11 @@ export default async function middleware(request: NextRequest) {
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-url", request.url);
 
-//   const response = NextResponse.next({
-//     request: {
-//       headers: requestHeaders,
-//     },
-//   });
+  //   const response = NextResponse.next({
+  //     request: {
+  //       headers: requestHeaders,
+  //     },
+  //   });
 
   const pathname = request.nextUrl.pathname;
 
@@ -64,7 +63,7 @@ export default async function middleware(request: NextRequest) {
     const locale = getLocale(request);
     return NextResponse.redirect(new URL(`/${locale}${pathname}`, request.url));
   }
-//   const currentLocale = request.url.split("/")[3] as Locale;
+  //   const currentLocale = request.url.split("/")[3] as Locale;
 
   return NextResponse.next({
     request: {

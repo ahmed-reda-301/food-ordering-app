@@ -7,6 +7,7 @@
 ## ⏱️ Timestamps & Key Steps
 
 ### 00:00:00 - Introduction
+
 - This part starts with a recap of what was built in Part 1 (UI, menu, cart, i18n, database setup).
 - The instructor explains the new focus: adding authentication, admin features, and advanced data management.
 - Key goals for Part 2:
@@ -22,6 +23,7 @@
 - The instructor previews the final result: a full-stack food ordering app with real authentication, admin control, and scalable code structure.
 
 ### 00:04:13 - App Features
+
 - Features added in this part:
   - User authentication (sign in/up)
   - Protected routes (middleware)
@@ -29,70 +31,95 @@
   - User, category, and product management
 
 ### 00:18:13 - Setup Next Auth
+
+https://next-auth.js.org/getting-started/example
+
 - Install NextAuth.js:
   ```bash
   npm install next-auth
   ```
-- Create `[...nextauth].ts` in `api/auth`.
-- Configure providers (CredentialsProvider).
+
+https://next-auth.js.org/configuration/initialization#route-handlers-app
+
+- Create [route.ts](src/app/api/auth/[...nextauth]/route.ts) in `app/api/auth/[...nextauth]`.
+- Configure providers (CredentialsProvider) in [auth.ts](src/server/auth.ts)
+- Update environment variables (NEXTAUTH_SECRET,NODE_ENV, etc) [.env](.env).
 - Connect authentication to Prisma (Prisma Adapter).
-- Update environment variables (NEXTAUTH_SECRET, etc).
+  - install prisma-adapter
+  ```bash
+  npm i @next-auth/prisma-adapter
+  ```
 
 ### 00:39:11 - Add JSX for Auth Pages
+
 - Build sign in and sign up pages using Shadcn UI components.
+
+  - create [signin](src/app/[locale]/auth/signin/page.tsx)
+  - create [signup](src/app/[locale]/auth/signup/page.tsx)
+
 - Add input fields (email, password, name).
 - Connect pages to NextAuth actions.
 
 ### 00:48:30 - Build useFormFields Hook
+
 - Create a custom hook for form field management (`useFormFields`).
 - Simplifies handling of form values and changes.
 - Example:
   ```ts
-  const { fields, handleChange } = useFormFields({ email: '', password: '' });
+  const { fields, handleChange } = useFormFields({ email: "", password: "" });
   ```
 
 ### 01:20:03 - Add Signin Form (signin action)
+
 - Implement sign in logic using NextAuth.
 - Handle errors and responses.
 - Redirect user after successful sign in.
 
 ### 02:24:09 - Add Signup Form (signup action)
+
 - Implement sign up logic with validation.
 - Add new user to the database.
 - Auto sign in after registration.
 
 ### 03:02:27 - Protected Routes (Next Middleware)
+
 - Use Next.js middleware to protect admin pages.
 - Redirect unauthorized users to the login page.
 - Example:
   ```ts
   // src/middleware.ts
   if (!session || !session.user.isAdmin) {
-    return NextResponse.redirect('/auth/login');
+    return NextResponse.redirect("/auth/login");
   }
   ```
 
 ### 04:07:52 - Add EditUserForm Component
+
 - Build a form to edit user data (name, email, role).
 - Connect the form to the database for direct updates.
 
 ### 05:52:55 - Add AdminTabs Component
+
 - Build a tabs component for the admin dashboard (Users, Categories, Products, Orders).
 - Easy navigation between admin sections.
 
 ### 06:00:47 - Add Categories Page
+
 - Build the categories management page (list, add, edit, delete).
 - Connect the page to the database via Prisma.
 
 ### 06:46:45 - Add MenuItems Page
+
 - Build the products management page (list, add, edit, delete).
 - Support linking products to categories, sizes, and extras.
 
 ### 10:17:01 - Add Users Page
+
 - Build the users management page (list, edit, delete, change role).
 - Protect sensitive operations (role changes).
 
 ### 10:33:43 - Test App Scenarios
+
 - Test all scenarios:
   - Register a new user
   - Sign in as user/admin

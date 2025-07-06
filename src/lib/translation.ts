@@ -20,14 +20,14 @@
 // - Extendable for more languages by adding to the dictionaries object.
 // -----------------------------------------------------------------------------
 
-import 'server-only';
+import "server-only";
 
-import { Locale } from '@/i18n.config';
-import { Languages } from '@/constants/enums';
+import { Locale } from "@/i18n.config";
+import { Languages } from "@/constants/enums";
 
 const dictionaries = {
-  ar: () => import('@/dictionaries/ar.json').then((module) => module.default),
-  en: () => import('@/dictionaries/en.json').then((module) => module.default),
+  ar: () => import("@/dictionaries/ar.json").then((module) => module.default),
+  en: () => import("@/dictionaries/en.json").then((module) => module.default),
 };
 
 const getTrans = async (locale: Locale) => {

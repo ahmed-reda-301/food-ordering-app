@@ -33,7 +33,8 @@ const LanguageSwitcher = () => {
 
   const switchLanguage = (newLocale: string) => {
     const path =
-      pathname?.replace(`/${locale}`, `/${newLocale}`) ?? `
+      pathname?.replace(`/${locale}`, `/${newLocale}`) ??
+      `
       /${newLocale}`;
     router.push(path);
   };

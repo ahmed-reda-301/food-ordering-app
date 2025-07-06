@@ -763,6 +763,7 @@ The project uses a robust internationalization setup to support multiple languag
 ### Implementation Steps
 
 1. **Create the middleware for locale detection and redirection:**
+
    - File: `src/middleware.ts`
    - Uses `negotiator` and `@formatjs/intl-localematcher` to detect the user's preferred language from the request headers.
    - Redirects users to the correct locale-prefixed route if missing (e.g., `/en`, `/ar`).
@@ -771,34 +772,40 @@ The project uses a robust internationalization setup to support multiple languag
    - [See actual implementation in `src/middleware.ts`]
 
 2. **Move all app files into a locale-based folder:**
+
    - Create `[locale]` folder: `src/app/[locale]`
    - Move all pages, components, and assets from `src/app/` to `src/app/[locale]/`.
    - This enables Next.js to treat the locale as a dynamic route segment and render the correct language.
 
 3. **Install required i18n dependencies:**
+
    ```bash
    npm install negotiator @formatjs/intl-localematcher
    ```
+
    - These packages are used for language negotiation and matching in the middleware.
 
 4. **Create the i18n configuration file:**
+
    - File: `src/i18n.config.ts`
    - Defines supported languages, the default locale, and exports types for use throughout the app.
    - Example:
      ```ts
      export const i18n = {
-       defaultLocale: 'ar',
-       locales: ['ar', 'en'],
+       defaultLocale: "ar",
+       locales: ["ar", "en"],
      };
      ```
 
 5. **Update the root layout to support locales:**
+
    - File: `src/app/[locale]/layout.tsx`
    - Uses `generateStaticParams` to statically generate pages for each supported locale.
    - Sets the `lang` and `dir` attributes on the `<html>` element for accessibility and RTL/LTR support.
    - Dynamically loads the correct font (e.g., Roboto for English, Cairo for Arabic).
 
 6. **Create the translation dictionaries:**
+
    - Folder: `src/dictionaries/`
    - Files: `ar.json`, `en.json`
    - Each file contains all translation keys and values for the app in that language.
@@ -814,12 +821,14 @@ The project uses a robust internationalization setup to support multiple languag
      ```
 
 7. **Create translation utility functions:**
+
    - File: `src/lib/translation.ts`
      - Dynamically imports the correct dictionary based on the current locale.
    - File: `src/lib/getCurrentLocale.ts`
      - Extracts the current locale from the `x-url` header set by the middleware.
 
 8. **Update all components and pages to use translations:**
+
    - All UI components and pages fetch the current locale and load the appropriate translations using the utilities above.
    - Example usage:
      ```tsx
@@ -830,6 +839,7 @@ The project uses a robust internationalization setup to support multiple languag
    - All static text is now stored in the translation files for full i18n support.
 
 9. **Add a language switcher component:**
+
    - File: `src/components/header/language-switcher.tsx`
    - Allows users to switch between Arabic and English by updating the locale segment in the URL.
    - Uses Next.js navigation hooks for seamless client-side navigation.
@@ -866,6 +876,3 @@ The project uses a robust internationalization setup to support multiple languag
 ---
 
 > You can add more detailed explanations or code samples under each step as needed.
-
-
-

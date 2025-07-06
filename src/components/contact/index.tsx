@@ -20,24 +20,27 @@
 // - Use semantic HTML and accessible markup for better SEO and UX.
 // -----------------------------------------------------------------------------
 
-import MainHeading from '@/components/main-heading';
-import { Routes } from '@/constants/enums';
-import { getCurrentLocale } from '@/lib/getCurrentLocale';
-import getTrans from '@/lib/translation';
+import MainHeading from "@/components/main-heading";
+import { Routes } from "@/constants/enums";
+import { getCurrentLocale } from "@/lib/getCurrentLocale";
+import getTrans from "@/lib/translation";
 
 const Contact = async () => {
   const locale = await getCurrentLocale();
   const { home } = await getTrans(locale);
   const { contact } = home;
   return (
-    <section className='section-gap' id={Routes.CONTACT}>
-      <div className='container text-center'>
+    <section className="section-gap" id={Routes.CONTACT}>
+      <div className="container text-center">
         <MainHeading
           subTitle={contact["Don'tHesitate"]}
           title={contact.contactUs}
         />
-        <div className='mt-8'>
-          <a className='text-4xl underline text-accent' href='tel:+201094597301'>
+        <div className="mt-8">
+          <a
+            className="text-4xl underline text-accent"
+            href="tel:+201094597301"
+          >
             +201094597301
           </a>
         </div>
