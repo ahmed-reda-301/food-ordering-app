@@ -1,3 +1,38 @@
+// =====================================================================================
+// Prisma Schema for Food Ordering App
+// -------------------------------------------------------------------------------------
+// This schema defines the database structure for a full-featured food ordering platform.
+// It includes user authentication (NextAuth-compatible), product catalog, ordering,
+// and extensible product options. All relations, constraints, and enums are documented.
+//
+// Key Features:
+// - User authentication and session management (NextAuth.js ready)
+// - Product catalog with categories, sizes, and extra ingredients
+// - Order and order-product linking for multi-item orders
+// - Extensible enums for product sizes, extras, and user roles
+// - PostgreSQL as the database provider
+//
+// Models:
+//   - User: App users, with authentication and profile fields
+//   - Session: User sessions for authentication
+//   - VerificationRequest: For email/passwordless login flows
+//   - Account: OAuth/social login provider accounts
+//   - Product: Food items, linked to categories, sizes, and extras
+//   - Size: Size options for products (e.g., small/medium/large)
+//   - Extra: Extra ingredients for products (e.g., cheese, bacon)
+//   - Category: Product categories (e.g., pizza, drinks)
+//   - Order: Customer orders, with delivery and payment info
+//   - OrderProduct: Join table for products in an order
+//
+// Enums:
+//   - ProductSizes: Allowed product sizes
+//   - ExtraIngredients: Allowed extra ingredients
+//   - UserRole: User roles (USER, ADMIN)
+//
+// This schema is designed for scalability, extensibility, and integration with modern
+// authentication and ordering flows. Edit or extend models/enums as your app grows.
+// =====================================================================================
+
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
@@ -25,22 +60,65 @@ model User {
   postalCode    String?
   city          String?
   country       String?
+  role          UserRole       @default(USER)
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   orders        OrderProduct[]
+  accounts      Account[]
+  sessions      Session[]
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationRequest {
+  id         String   @id @default(cuid())
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([identifier, token])
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Product {
-  id           String         @id @default(cuid())
-  name         String
-  description  String
-  imageUrl     String
-  order        Int            @default(autoincrement())
-  basePrice    Float
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  sizes        Size[]
-  extras       Extra[]
+  id          String         @id @default(cuid())
+  name        String
+  description String
+  imageUrl    String
+  order       Int            @default(autoincrement())
+  basePrice   Float
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  sizes       Size[]
+  extras      Extra[]
   orders      OrderProduct[]
   category    Category       @relation(fields: [categoryId], references: [id])
   categoryId  String
@@ -110,4 +188,9 @@ enum ExtraIngredients {
   TOMATO
   ONION
   PEPPER
+}
+
+enum UserRole {
+  USER
+  ADMIN
 }

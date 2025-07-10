@@ -57,12 +57,10 @@ https://next-auth.js.org/configuration/initialization#route-handlers-app
   - create [signin](src/app/[locale]/auth/signin/page.tsx)
   - create [signup](src/app/[locale]/auth/signup/page.tsx)
 
-- Add input fields (email, password, name).
-- Connect pages to NextAuth actions.
-
 ### 00:48:30 - Build useFormFields Hook
 
-- Create a custom hook for form field management (`useFormFields`).
+- Create a custom hook for form field management (`useFormFields`) [useFormFields](src/hooks/useFormFields.ts).
+
 - Simplifies handling of form values and changes.
 - Example:
   ```ts
@@ -78,7 +76,31 @@ https://next-auth.js.org/configuration/initialization#route-handlers-app
 ### 02:24:09 - Add Signup Form (signup action)
 
 - Implement sign up logic with validation.
+  https://zod.dev/
+  - install zod
+      ```bash
+      npm install zod
+      ```
+    https://www.npmjs.com/package/bcrypt
+    https://www.npmjs.com/package/@types/bcrypt
+  - install bcrypt
+      ```bash
+      npm i bcrypt
+      npm i @types/bcrypt
+      ```
+  - create [auth.ts](src/validations/auth.ts) 
+  - create [translations.ts](src/types/translations.ts)
+
 - Add new user to the database.
+  - update [schema.prisma](prisma/schema.prisma)
+     - After any changes to your schema.prisma, update your database with:
+     ```bash
+     npx prisma generate
+     npx prisma migrate dev
+   
+     ```
+
+
 - Auto sign in after registration.
 
 ### 03:02:27 - Protected Routes (Next Middleware)
