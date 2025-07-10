@@ -19,7 +19,6 @@
 // - Keeps language switching logic simple and URL-based for SEO and SSR compatibility.
 // - Extendable for more languages by adding more buttons/options.
 // -----------------------------------------------------------------------------
-
 "use client";
 
 import { useParams, usePathname, useRouter } from "next/navigation";
@@ -33,9 +32,7 @@ const LanguageSwitcher = () => {
 
   const switchLanguage = (newLocale: string) => {
     const path =
-      pathname?.replace(`/${locale}`, `/${newLocale}`) ??
-      `
-      /${newLocale}`;
+      pathname?.replace(`/${locale}`, `/${newLocale}`) ?? `/${newLocale}`;
     router.push(path);
   };
 

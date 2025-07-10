@@ -1,12 +1,36 @@
-import type { Metadata } from "next";
-import { Cairo, Roboto } from "next/font/google";
-import "./globals.css";
+// -----------------------------------------------------------------------------
+// src/app/[locale]/layout.tsx
+//
+// Root Layout Component
+// -----------------------------------------------------------------------------
+// Purpose:
+// - Provides the global layout, theming, and providers for the app.
+//
+// Features:
+// - Sets up the HTML lang and dir attributes based on the current locale (LTR/RTL).
+// - Loads Google Fonts (Cairo for Arabic, Roboto for English) dynamically.
+// - Wraps the app with ReduxProvider for state management.
+// - Renders the Header, Footer, and Toaster (for notifications) on every page.
+// - Ensures all children are rendered within the correct context and layout.
+//
+// Usage:
+//   Used as the root layout for all locale-prefixed routes in the app.
+//
+// Best Practices:
+// - Place all global providers and layout elements here for consistency.
+// - Use dynamic font loading and direction for full i18n support.
+// -----------------------------------------------------------------------------
+
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import ReduxProvider from "@/providers/ReduxProvider";
 import { Directions, Languages } from "@/constants/enums";
+import type { Metadata } from "next";
+import { Cairo, Roboto } from "next/font/google";
 import { Locale } from "@/i18n.config";
-import { Toaster } from "@/components/ui/sonner"
+import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
+import NextAuthSessionProvider from "@/providers/NextAuthSessionProvider";
 
 export async function generateStaticParams() {
   return [{ locale: Languages.ARABIC }, { locale: Languages.ENGLISH }];
@@ -47,12 +71,14 @@ export default async function RootLayout({
           locale === Languages.ARABIC ? cairo.className : roboto.className
         }
       >
-        <ReduxProvider>
-          <Header />
-          {children}
-          <Footer />
-          <Toaster />
-        </ReduxProvider>
+        <NextAuthSessionProvider>
+          <ReduxProvider>
+            <Header />
+            {children}
+            <Footer />
+            <Toaster />
+          </ReduxProvider>
+        </NextAuthSessionProvider>
       </body>
     </html>
   );
