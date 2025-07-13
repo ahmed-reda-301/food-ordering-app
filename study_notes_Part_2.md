@@ -154,8 +154,46 @@ https://next-auth.js.org/configuration/initialization#route-handlers-app
 
 ### 06:00:47 - Add Categories Page
 
-- Build the categories management page (list, add, edit, delete).
-- Connect the page to the database via Prisma.
+- Implemented the admin categories management page in `src/app/[locale]/admin/categories/page.tsx`:
+  - Loads categories and translations asynchronously for the current locale.
+  - Displays a form to add new categories and a list of existing categories.
+  - Handles i18n for all UI text and messages.
+
+- Created supporting components and logic:
+  - `Form.tsx`: Form for adding new categories, with validation and toast notifications.
+  - `EditCategory.tsx`: Dialog form for editing categories, with validation and i18n.
+  - `DeleteCategory.tsx`: Button for deleting categories, with loading state and feedback.
+  - `CategoryItem.tsx`: Renders each category with edit and delete actions.
+
+- Added server actions in `_actions/category.ts`:
+  - addCategory: Validates and adds a new category, revalidates paths, returns status/message.
+  - updateCategory: Validates and updates an existing category, revalidates paths, returns status/message.
+  - deleteCategory: Deletes a category, revalidates paths, returns status/message.
+  - All actions use i18n for messages and validation errors.
+
+- Added category validation schemas in `src/validations/category.ts` using Zod:
+  - addCategorySchema: Validates new category data (name required).
+  - updateCategorySchema: Validates category update data (categoryName required).
+  - All validation messages are i18n-ready.
+
+- Created database utility in `src/server/db/categories.ts`:
+  - getCategories: Fetches all categories ordered by 'order' field, with caching for performance.
+
+- Updated styles in `globals.css` for improved UI consistency.
+
+- Added detailed documentation headers to all key files for maintainability and clarity.
+
+- All code and documentation are written in English and follow best practices for scalability and i18n support.
+
+- See the source files for full implementation and documentation:
+  - `src/app/[locale]/admin/categories/page.tsx`
+  - `src/app/[locale]/admin/categories/_components/Form.tsx`
+  - `src/app/[locale]/admin/categories/_components/EditCategory.tsx`
+  - `src/app/[locale]/admin/categories/_components/DeleteCategory.tsx`
+  - `src/app/[locale]/admin/categories/_components/CategoryItem.tsx`
+  - `src/app/[locale]/admin/categories/_actions/category.ts`
+  - `src/validations/category.ts`
+  - `src/server/db/categories.ts`
 
 ### 06:46:45 - Add MenuItems Page
 

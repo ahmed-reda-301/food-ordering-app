@@ -68,10 +68,10 @@ function EditCategory({
 
   useEffect(() => {
     if (state.message) {
-    //   toast({
-    //     title: state.message,
-    //     className: state.status === 200 ? "text-green-400" : "text-destructive",
-    //   });
+      //   toast({
+      //     title: state.message,
+      //     className: state.status === 200 ? "text-green-400" : "text-destructive",
+      //   });
       toast(state.message, {
         className: state.status === 200 ? "text-green-400" : "text-destructive",
       });
