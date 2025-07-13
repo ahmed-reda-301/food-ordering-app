@@ -77,29 +77,32 @@ https://next-auth.js.org/configuration/initialization#route-handlers-app
 
 - Implement sign up logic with validation.
   https://zod.dev/
+
   - install zod
-      ```bash
-      npm install zod
-      ```
+    ```bash
+    npm install zod
+    ```
     https://www.npmjs.com/package/bcrypt
     https://www.npmjs.com/package/@types/bcrypt
   - install bcrypt
-      ```bash
-      npm i bcrypt
-      npm i @types/bcrypt
-      ```
-  - create [auth.ts](src/validations/auth.ts) 
+    ```bash
+    npm i bcrypt
+    npm i @types/bcrypt
+    ```
+  - create [auth.ts](src/validations/auth.ts)
   - create [translations.ts](src/types/translations.ts)
 
 - Add new user to the database.
-  - update [schema.prisma](prisma/schema.prisma)
-     - After any changes to your schema.prisma, update your database with:
-     ```bash
-     npx prisma generate
-     npx prisma migrate dev
-   
-     ```
 
+  - update [schema.prisma](prisma/schema.prisma)
+
+    - After any changes to your schema.prisma, update your database with:
+
+    ```bash
+    npx prisma generate
+    npx prisma migrate dev
+
+    ```
 
 - Auto sign in after registration.
 
@@ -124,15 +127,30 @@ https://next-auth.js.org/configuration/initialization#route-handlers-app
 
 -https://console.cloudinary.com/app/c-cd1141008d57cafd351eaf01472532/image/getting-started
 
--    install  cloudinary
-  ```bash
-     npm i cloudinary
-     ```
+- install cloudinary
+
+````bash
+   npm i cloudinary
+   ```
 
 ### 05:52:55 - Add AdminTabs Component
 
-- Build a tabs component for the admin dashboard (Users, Categories, Products, Orders).
-- Easy navigation between admin sections.
+- Created the `AdminTabs` component in `src/app/[locale]/admin/_components/AdminTabs.tsx`:
+- Renders navigation tabs for the admin dashboard (Profile, Categories, Menu Items, Users, Orders).
+- Uses translations from the current locale for tab labels (i18n-ready).
+- Highlights the active tab based on the current route and locale.
+- Utilizes Next.js client-side navigation and custom button variants for consistent UI.
+- Added a detailed documentation header explaining the component's purpose, props, i18n support, and usage.
+
+- Updated the admin layout in `src/app/[locale]/admin/layout.tsx`:
+- Loads translations asynchronously for the current locale.
+- Renders the `AdminTabs` component above all admin page content for consistent navigation.
+- Ensures all admin pages are i18n-ready and follow a unified structure.
+- Added a detailed documentation header describing the layout's role, props, async data loading, and best practices.
+
+- See the source files for full documentation headers and implementation details:
+- `src/app/[locale]/admin/_components/AdminTabs.tsx`
+- `src/app/[locale]/admin/layout.tsx`
 
 ### 06:00:47 - Add Categories Page
 
@@ -152,12 +170,13 @@ https://next-auth.js.org/configuration/initialization#route-handlers-app
 ### 10:33:43 - Test App Scenarios
 
 - Test all scenarios:
-  - Register a new user
-  - Sign in as user/admin
-  - Test protected routes
-  - Add/edit categories and products
-  - Manage users from the admin dashboard
+- Register a new user
+- Sign in as user/admin
+- Test protected routes
+- Add/edit categories and products
+- Manage users from the admin dashboard
 
 ---
 
 > You can add more details or code samples under each step as needed. If you want a detailed explanation for any part, specify the step or timestamp.
+````
