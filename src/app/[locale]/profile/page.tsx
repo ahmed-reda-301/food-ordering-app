@@ -22,7 +22,7 @@
 //   - Pass translations and user data as props to child components for full i18n and type safety.
 // -----------------------------------------------------------------------------
 
-// import EditUserForm from "@/components/edit-user-form";
+import EditUserForm from "@/components/edit-user-form";
 import { Pages, Routes } from "@/constants/enums";
 import { Locale } from "@/i18n.config";
 import getTrans from "@/lib/translation";
@@ -53,7 +53,7 @@ async function ProfilePage({
           <h1 className="text-primary text-center font-bold text-4xl italic mb-10">
             {translations.profile.title}
           </h1>
-          {/* <EditUserForm user={session?.user} translations={translations} /> */}
+          <EditUserForm user={session?.user} translations={translations} />
         </div>
       </section>
     </main>

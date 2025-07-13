@@ -22,7 +22,7 @@
 //   - Pass translations and user data as props to child components for full i18n and type safety.
 // -----------------------------------------------------------------------------
 
-// import EditUserForm from "@/components/edit-user-form";
+import EditUserForm from "@/components/edit-user-form";
 import { Pages, Routes } from "@/constants/enums";
 import { Locale } from "@/i18n.config";
 import getTrans from "@/lib/translation";
@@ -47,7 +47,7 @@ async function AdminPage({ params }: { params: Promise<{ locale: Locale }> }) {
     <main>
       <section className="section-gap">
         <div className="container">
-          {/* <EditUserForm user={session?.user} translations={translations} /> */}
+          <EditUserForm user={session?.user} translations={translations} />
         </div>
       </section>
     </main>

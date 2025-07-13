@@ -119,6 +119,15 @@ https://next-auth.js.org/configuration/initialization#route-handlers-app
 
 - Build a form to edit user data (name, email, role).
 - Connect the form to the database for direct updates.
+- cloudinary for images
+- https://console.cloudinary.com/app/c-cd1141008d57cafd351eaf01472532/image/getting-started
+
+-https://console.cloudinary.com/app/c-cd1141008d57cafd351eaf01472532/image/getting-started
+
+-    install  cloudinary
+  ```bash
+     npm i cloudinary
+     ```
 
 ### 05:52:55 - Add AdminTabs Component
 
