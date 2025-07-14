@@ -55,3 +55,4 @@ async function AdminPage({ params }: { params: Promise<{ locale: Locale }> }) {
 }
 
 export default AdminPage;
+
