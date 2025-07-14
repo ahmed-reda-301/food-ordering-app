@@ -197,8 +197,51 @@ https://next-auth.js.org/configuration/initialization#route-handlers-app
 
 ### 06:46:45 - Add MenuItems Page
 
-- Build the products management page (list, add, edit, delete).
-- Support linking products to categories, sizes, and extras.
+- Implemented the admin menu items management page in [`src/app/[locale]/admin/menu-items/page.tsx`](src/app/[locale]/admin/menu-items/page.tsx):
+  - Loads products and translations asynchronously for the current locale.
+  - Displays a button to add new products and a grid/list of existing products.
+  - Handles i18n for all UI text and messages.
+
+- Created supporting components and logic:
+  - [`Form.tsx`](src/app/[locale]/admin/menu-items/_components/Form.tsx): Form for adding/editing products, with validation, image upload, and toast notifications.
+  - [`ItemOptions.tsx`](src/app/[locale]/admin/menu-items/_components/ItemOptions.tsx): UI for managing product options (sizes, extras) in the product form.
+  - [`SelectCategory.tsx`](src/app/[locale]/admin/menu-items/_components/SelectCategory.tsx): Dropdown for selecting a category when adding/editing a product.
+  - [`MenuItems.tsx`](src/app/[locale]/admin/menu-items/_components/MenuItems.tsx): Renders a grid/list of products with images, names, and edit links.
+
+- Added server actions in [`_actions/product.ts`](src/app/[locale]/admin/menu-items/_actions/product.ts):
+  - addProduct: Validates and adds a new product, handles image upload, revalidates paths, returns status/message.
+  - updateProduct: Validates and updates an existing product, handles image upload, revalidates paths, returns status/message.
+  - deleteProduct: Deletes a product, revalidates paths, returns status/message.
+  - All actions use i18n for messages and validation errors.
+
+- Added product validation schemas in [`src/validations/product.ts`](src/validations/product.ts) using Zod:
+  - addProductSchema: Validates new product data (name, description, price, image, category, etc).
+  - updateProductSchema: Validates product update data.
+  - Includes image validation logic for required and optional images.
+  - All validation messages are i18n-ready.
+
+- Created database utilities in [`src/server/db/products.ts`](src/server/db/products.ts):
+  - getProductsByCategory: Fetches products grouped by category, including sizes and extras, with caching for performance.
+  - getBestSellers: Fetches best-selling products, ordered by order count, with optional limit.
+
+- Implemented new and edit product pages:
+  - [`new/page.tsx`](src/app/[locale]/admin/menu-items/new/page.tsx): Loads session, locale, translations, and categories; displays the product form for adding a new product.
+  - [`[productId]/edit/page.tsx`](src/app/[locale]/admin/menu-items/[productId]/edit/page.tsx): Loads product, categories, and translations; displays the product form pre-filled with existing product data.
+
+- Added detailed documentation headers to all key files for maintainability and clarity.
+
+- See the source files for full implementation and documentation:
+  - [`src/app/[locale]/admin/menu-items/page.tsx`](src/app/[locale]/admin/menu-items/page.tsx)
+  - [`src/app/[locale]/admin/menu-items/_components/Form.tsx`](src/app/[locale]/admin/menu-items/_components/Form.tsx)
+  - [`src/app/[locale]/admin/menu-items/_components/ItemOptions.tsx`](src/app/[locale]/admin/menu-items/_components/ItemOptions.tsx)
+  - [`src/app/[locale]/admin/menu-items/_components/SelectCategory.tsx`](src/app/[locale]/admin/menu-items/_components/SelectCategory.tsx)
+  - [`src/app/[locale]/admin/menu-items/_components/MenuItems.tsx`](src/app/[locale]/admin/menu-items/_components/MenuItems.tsx)
+  - [`src/app/[locale]/admin/menu-items/_actions/product.ts`](src/app/[locale]/admin/menu-items/_actions/product.ts)
+  - [`src/validations/product.ts`](src/validations/product.ts)
+  - [`src/server/db/products.ts`](src/server/db/products.ts)
+  - [`src/app/[locale]/admin/menu-items/new/page.tsx`](src/app/[locale]/admin/menu-items/new/page.tsx)
+  - [`src/app/[locale]/admin/menu-items/[productId]/edit/page.tsx`](src/app/[locale]/admin/menu-items/[productId]/edit/page.tsx)
+````
 
 ### 10:17:01 - Add Users Page
 
@@ -217,4 +260,7 @@ https://next-auth.js.org/configuration/initialization#route-handlers-app
 ---
 
 > You can add more details or code samples under each step as needed. If you want a detailed explanation for any part, specify the step or timestamp.
-````
+
+```
+
+```
